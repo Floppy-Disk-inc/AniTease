@@ -58,7 +58,7 @@ let isPlaying = false;
 // 3. BACKUP SYSTEMS (TIER 2 DATA HUNTER)
 // ==========================================
 async function getTier2BackupTrailer(english, romaji, native, synonyms = []) {
-    const TMDB_API_KEY = "0f8828789e9c3e479561d16641621a73"; 
+    const TMDB_API_KEY = ""; 
     const searchTitles = [...new Set([english, romaji, native, ...synonyms])].filter(Boolean);    
     for (const title of searchTitles) {
         try {
@@ -94,10 +94,10 @@ async function getTier2BackupTrailer(english, romaji, native, synonyms = []) {
 // ==========================================
 // TIER 3 BACKUP (YOUTUBE DATA API v3 - FILTER & SEQUEL ENGINE)
 // ==========================================
-const YOUTUBE_API_KEY = 'AlzaSyCzjWcEiYm_mueUwtkilitJYk2Umu0q_gk';
+const YOUTUBE_API_KEY = '';
 
 async function getTier3YouTubeTrailer(title) {
-    if (!title || YOUTUBE_API_KEY === 'AlzaSyCzjWcEiYm_mueUwtkilitJYk2Umu0q_gk') return null;
+    if (!title || YOUTUBE_API_KEY === '') return null;
     try {
         const query = encodeURIComponent(`${title} official anime trailer PV`);
         const url = `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&q=${query}&key=${YOUTUBE_API_KEY}&maxResults=5`;
