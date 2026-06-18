@@ -69,6 +69,7 @@ about {
 
 /* 3. Re-enforce your friend's Jester card layout details */
 .dev1 {
+    z-index: 999;
     background-color: #eedecb; 
     display: flex;
     justify-content: center;
@@ -101,8 +102,14 @@ about {
     width: 300px;
     height: auto;
     margin: 0 auto;
+    cursor: pointer;
+    transition: transform 0.4s ease, filter 0.4s ease;
 }
 
+.dev1 img:hover {
+    cursor: pointer;
+    transform: scale(1.2)
+}
 /* 4. Keep your Ace card styling secure */
 .dev2 {
     background-color: #000000;
@@ -143,10 +150,12 @@ about {
 .dev2 img {
     width: 150px; 
     height: auto; 
+    cursor: pointer;
     transition: transform 0.4s ease, filter 0.4s ease;
 }
 
 .dev2:hover img {
+    cursor: pointer;
     transform: scale(2.3);
     filter: brightness(1.2);
 }
@@ -160,11 +169,9 @@ about {
 }
 
 #site-top-title {
-    cursor: pointer;
     display: inline-block;
     transition: opacity 0.2s ease;
 }
-#site-top-title:hover { opacity: 0.8; }
 
 #title1 {
     color: var(--text-light);
@@ -565,8 +572,8 @@ about {
 /* The Rescued Close Button - !important flags enforce its layering */
 .close-btn {
     position: absolute;
-    top: 15px !important;      
-    right: 20px !important;    
+    top: -12px !important;      
+    right: 3px !important;    
     color: #fff !important;
     font-size: 2.5rem !important;
     font-weight: bold !important;
@@ -583,7 +590,7 @@ about {
 footer {
     background-color: #111337a8;
     color: #ffffff;
-    padding: 20px 0;
+    padding: 10px 0;
     position: relative;
     z-index: 10;
 }
@@ -594,8 +601,7 @@ footer {
     align-items: center;
     max-width: 400px;
     margin: 0 auto;
-    padding: 0 20px;
-    /* Forces the narrow footer to keep its structural integrity */
+    padding: 0 10px;
     box-sizing: border-box; 
 }
 
@@ -619,7 +625,6 @@ html {
 }
 
 .back-to-top {
-    /* Always floating relative to the main viewport screen edge */
     position: fixed;
     bottom: var(--footer-offset, 2rem);
     right: 1rem;
@@ -851,22 +856,22 @@ about {
 
 li, a, button{
     font-family: "Mozilla Headline", sans-serif;
-    font-weight: 200;
+    font-weight: bold;
     font-size: 16px;
     color: #edf0f1;
     text-decoration: none;
 }
 
 nav_bar{
+    font-weight: bold;
     display: flex;
     justify-content: left;
     align-items: center;
-    padding: 30px 10%;
+    padding: 20px 10%;
     background-color: #070228b9;
     z-index: 20;
 }
 .nav_logo{
-    cursor: pointer;
     width: 60px;
     height: 30px;    
 }
