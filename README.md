@@ -10,4 +10,5 @@ Copyright Notice
 - Using any part of this code in your own projects (commercial or private).
 
 Unauthorized use is a violation of international copyright law.
+
 If forked: Forks are for viewing only and do not grant permission to use or modify the code.
