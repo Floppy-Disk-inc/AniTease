@@ -1,6 +1,10 @@
 // ==========================================
 // 1. DOM GLOBAL ELEMENT SELECTORS
 // ==========================================
+const supabaseClient = supabase.createClient(
+    'https://flketgohnahlgtykpbwu.supabase.co',
+    'sb_publishable_1ArkuHMOt0qFJtBf9uX6xA_EYgrKGnJ'
+  );
 const searchInput = document.getElementById('search-input');
 const searchButton = document.getElementById('search-btn');
 const resultsContainer = document.getElementById('results-container');
@@ -11,22 +15,12 @@ const feedTitle = document.getElementById('feed-title');
 // Modals, Screens, and Panel Containers
 const modal = document.getElementById('trailer-modal');
 const closeBtn = document.querySelector('.close-btn');
-const settingsBtn = document.getElementById('settings-btn');
-const settingsPanel = document.getElementById('settings-panel');
-const closeSettings = document.querySelector('.close-settings');
 const loadingScreen = document.getElementById('loading-screen');
-
-// Interactive System Controls
-const musicBtn = document.getElementById('music-btn');
-const volSlider = document.getElementById('vol-slider');
-const bgToggle = document.getElementById('bg-toggle');
 
 // Constant Configuration Links
 // Automatically detects if the user is on the About page
 const isAboutPage = document.querySelector('about') !== null;
 
-const liveBgUrl = isAboutPage ? "url('assets/outro.gif')" : "url('assets/bg.gif')";
-const staticBgUrl = isAboutPage ? "url('assets/outro(static).png')" : "url('assets/bg(static).png')";
 
 // ==========================================
 // 2. CORE SYSTEM ENGINE VARIABLES
@@ -44,21 +38,11 @@ let allAnimeData = [];
 let searchTimeout; 
 let countdownInterval; 
 
-// Custom Engine Animation States
-let currentVolPercentage = 50;
-let animationTime = 0;
-
-// Audio System Configuration
-let audio = new Audio("assets/music1.mp3"); 
-audio.loop = true;
-audio.volume = 0.5; 
-let isPlaying = false;
-
 // ==========================================
 // 3. BACKUP SYSTEMS (TIER 2 DATA HUNTER)
 // ==========================================
 async function getTier2BackupTrailer(english, romaji, native, synonyms = []) {
-    const TMDB_API_KEY = ""; 
+    const TMDB_API_KEY = "0f8828789e9c3e479561d16641621a73"; 
     const searchTitles = [...new Set([english, romaji, native, ...synonyms])].filter(Boolean);    
     for (const title of searchTitles) {
         try {
@@ -94,10 +78,10 @@ async function getTier2BackupTrailer(english, romaji, native, synonyms = []) {
 // ==========================================
 // TIER 3 BACKUP (YOUTUBE DATA API v3 - FILTER & SEQUEL ENGINE)
 // ==========================================
-const YOUTUBE_API_KEY = '';
+const YOUTUBE_API_KEY = 'AlzaSyCzjWcEiYm_mueUwtkilitJYk2Umu0q_gk';
 
 async function getTier3YouTubeTrailer(title) {
-    if (!title || YOUTUBE_API_KEY === '') return null;
+    if (!title || YOUTUBE_API_KEY === 'AlzaSyCzjWcEiYm_mueUwtkilitJYk2Umu0q_gk') return null;
     try {
         const query = encodeURIComponent(`${title} official anime trailer PV`);
         const url = `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&q=${query}&key=${YOUTUBE_API_KEY}&maxResults=5`;
@@ -316,28 +300,6 @@ async function fetchAnimeData(title = "", page = 1, isNewSearch = true) {
 // ==========================================
 // 5. USER INTERFACE & UTILITY LORE
 // ==========================================
-function initializeBackgroundSystem() {
-    const savedBgPreference = localStorage.getItem("liveBackground");
-    if (savedBgPreference === "enabled" || savedBgPreference === null) {
-        bgToggle.checked = true;
-        document.body.style.backgroundImage = liveBgUrl;
-    } else {
-        bgToggle.checked = false;
-        document.body.style.backgroundImage = staticBgUrl;
-    }
-}
-
-function animateSliderTrack() {
-    animationTime += 0.02; 
-    const cycle = (Math.sin(animationTime) + 1) / 2; 
-    const shift = cycle * currentVolPercentage; 
-    
-    if (volSlider) {
-        volSlider.style.background = `linear-gradient(to right, rgb(220, 20, 60) 0%, rgb(255, 255, 255) ${shift}%, rgb(220, 20, 60) ${currentVolPercentage}%, #333 ${currentVolPercentage}%, #333 100%)`;
-    }
-    requestAnimationFrame(animateSliderTrack);
-}
-
 function initiateSearch() {
     clearTimeout(searchTimeout);
     searchTimeout = setTimeout(() => {
@@ -398,27 +360,6 @@ function closeModal() {
 // ==========================================
 // 7. EVENT EMITTERS & LISTENERS
 // ==========================================
-bgToggle.addEventListener('change', () => {
-    if (bgToggle.checked) {
-        document.body.style.backgroundImage = liveBgUrl;
-        localStorage.setItem("liveBackground", "enabled");
-    } else {
-        document.body.style.backgroundImage = staticBgUrl;
-        localStorage.setItem("liveBackground", "disabled");
-    }
-});
-
-settingsBtn.addEventListener('click', () => settingsPanel.style.display = 'flex');
-closeSettings.addEventListener('click', () => settingsPanel.style.display = 'none');
-window.addEventListener('click', (e) => { if (e.target === settingsPanel) settingsPanel.style.display = 'none'; });
-
-if (volSlider) {
-    volSlider.addEventListener('input', (e) => {
-        const value = e.target.value;
-        if (audio) audio.volume = value;
-        currentVolPercentage = value * 100;
-    });
-}
 
 if (searchInput) searchInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') initiateSearch(); });
 if (searchButton) searchButton.addEventListener('click', initiateSearch);
@@ -870,23 +811,10 @@ if (siteTopTitle) {
     });
 }
 
-musicBtn.addEventListener('click', () => {
-    if (isPlaying) {
-        audio.pause();
-        musicBtn.textContent = "🔈";
-    } else {
-        audio.play().catch(e => console.log("Audio play blocked:", e));
-        musicBtn.textContent = "🔊";
-    }
-    isPlaying = !isPlaying;
-});
-
 window.addEventListener('load', () => {
-    initializeBackgroundSystem();
     if (resultsContainer) {
         fetchAnimeData("", 1, true); 
     }
-    requestAnimationFrame(animateSliderTrack);
 });
 
 document.addEventListener('DOMContentLoaded', () => {
