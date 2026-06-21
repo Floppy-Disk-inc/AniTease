@@ -5,8 +5,9 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>AniTease | Friendly Anime Teasers</title>
         <link rel="stylesheet" href="style.css">
-        <script async src="https://www.youtube.com/iframe_api"></script>
         <script defer src="script.js"></script>
+        <script async src="https://www.youtube.com/iframe_api"></script>
+        <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
         <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
     </head>
     <body>
@@ -29,38 +30,6 @@
                     <li><a href="index2.html">ABOUT</a></li>                    
                 </ul>
             </nav>
-        </nav_bar>
-        
-        <button id="music-btn" title="Toggle Music">🔈</button>
-        <button id="settings-btn" title="Settings">⚙️</button>
-
-        <div id="settings-panel" class="settings-modal">
-            <div class="settings-content">
-                <span class="close-settings">&times;</span>
-                <h2>Settings</h2>
-                
-                <div class="setting-row">
-                    <label for="vol-slider">Background Volume:</label>
-                    <input type="range" id="vol-slider" min="0" max="1" step="0.1" value="0.5">
-                </div>
-
-                <div class="setting-row toggle-container">
-                    <label for="bg-toggle">Animated Background (GIF):</label>
-                    <input type="checkbox" id="bg-toggle" checked>
-                </div>
-
-                <p><small>Changes apply instantly and save automatically.</small></p>
-            </div>
-        </div>
-        
-        <header class="header">
-            <h1 id="site-top-title">
-                <span id="title1">Ani</span><span id="title2">Tease</span>
-            </h1>
-            <p id="slogan">Your Friendly Anime Teasers</p>
-        </header>
-        
-        <main>
             <div class="search-container">
                 <div class="search-input-wrapper">
                     <input type="text" id="search-input" placeholder="Search for a teaser... (e.g., Naruto)" autocomplete="off">
@@ -69,11 +38,11 @@
                 </div>
                 <button id="search-btn">Search</button>
             </div>
-            
-            <hr class="divider">
-            
+        </nav_bar>
+        
+        <main>
             <h2 id="feed-title" style="color: white; margin-left: 20px; font-family: sans-serif;">Upcoming Anime</h2>
-
+            <hr class="divider">
             <div id="results-container"></div>
         </main>
 
@@ -129,7 +98,7 @@
         <footer>
             <div class="footer-container">
                 <div class="footer-logo">
-                    <a href="https://www.fdi.digital" target="_blank">
+                    <a href="index2.html" target="_blank">
                         <img src="assets/floppy_logo.png">
                     </a>
                 </div>
