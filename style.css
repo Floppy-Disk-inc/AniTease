@@ -6,7 +6,7 @@
 
 :root {
     interpolate-size: allow-keywords;
-    --primary-bg: rgb(15, 15, 15);
+    --primary-bg: rgb(11, 11, 11);
     --accent-red: rgb(220, 20, 60);
     --card-bg: rgba(0, 0, 0, 0.945);
     --text-dark: #222;
@@ -67,7 +67,6 @@ about {
     box-sizing: border-box;
 }
 
-/* 3. Re-enforce your friend's Jester card layout details */
 .dev1 {
     z-index: 999;
     background-color: #eedecb; 
@@ -198,32 +197,31 @@ about {
 .search-container {
     display: flex;
     justify-content: center;
-    gap: 12px;
-    margin-bottom: 20px;
 }
 
 #search-input {  
     border: none;
-    border-radius: 25px;
+    border-radius: 12px;
     color: var(--text-light);
-    background-color: rgba(0, 0, 0, 0.7);
-    padding: 12px 24px;
+    background-color: rgb(0, 0, 0);
+    padding-left: 10px;
+    width: 522px !important;
+    height: 48px;
     font-size: 16px;
-    width: 300px;
     backdrop-filter: blur(5px);
     transition: all 0.3s ease;
-    user-select: text; /* Re-enables text selection just for the search bar */
+    user-select: text;
 }
 #search-input::placeholder { color: #aaa; }
 #search-input:focus {
     outline: none;
-    box-shadow: 0 0 15px rgba(220, 20, 60, 0.6);
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.6);
     background-color: rgba(0, 0, 0, 0.9);
 }
 
 #search-btn {
-    padding: 12px 24px;
-    border-radius: 25px;
+    padding: 11px 24px;
+    border-radius: 12px;
     border: none;
     background-color: var(--accent-red);
     color: white;
@@ -237,30 +235,6 @@ about {
     background-color: rgb(255, 40, 80) !important;
     transform: scale(1.05);
 }
-
-/* UI Corner Buttons */
-#music-btn, #settings-btn {
-    position: absolute;
-    top: 20px;
-    background: rgba(0,0,0,0.5);
-    border: none;
-    color: white;
-    font-size: 24px;
-    cursor: pointer;
-    border-radius: 50%;
-    width: 50px;
-    height: 50px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    transition: 0.3s;
-    z-index: 10;
-    position: absolute;
-    z-index: 100;
-}
-#music-btn { left: 20px; }
-#settings-btn { right: 20px; }
-#music-btn:hover, #settings-btn:hover { background: rgba(220, 20, 60, 0.8); }
 
 .divider {
     border: 0;
@@ -401,7 +375,7 @@ about {
 /* ==========================================
    4. MODALS & POP-UPS
    ========================================== */
-.settings-modal, .modal {
+    .modal {
     display: none; 
     position: fixed;
     top: 0; left: 0; width: 100%; height: 100%;
@@ -409,7 +383,6 @@ about {
     align-items: center;
 }
 
-.settings-modal { background: rgba(0,0,0,0.8); z-index: 1000; }
 .modal { background-color: rgba(0, 0, 0, 0.9); z-index: 100; overflow: hidden; }
 #loading-screen { 
     display: flex; /* Makes it show up instantly */
@@ -423,32 +396,7 @@ about {
     gap: 15px; 
 }
 
-.settings-content {
-    background: black;
-    padding: 30px;
-    border-radius: 15px;
-    color: #ffffff;
-    min-width: 280px;
-    position: relative;
-}
-
-.setting-row { margin: 20px 0; display: flex; flex-direction: column; gap: 8px; }
-.toggle-container { flex-direction: row; justify-content: space-between; align-items: center; }
-.toggle-container input[type="checkbox"] { width: 20px; height: 20px; cursor: pointer; }
-#bg-toggle { accent-color: var(--accent-red); }
-
 /* Custom Audio Slider Design */
-#vol-slider {
-    -webkit-appearance: none; appearance: none;
-    width: 100%; height: 6px;
-    background: #333; border-radius: 5px; outline: none; cursor: pointer;
-}
-#vol-slider::-webkit-slider-thumb {
-    -webkit-appearance: none; appearance: none;
-    width: 18px; height: 18px; border-radius: 50%;
-    background: #fff; cursor: pointer; transition: transform 0.1s ease;
-}
-#vol-slider::-webkit-slider-thumb:hover { transform: scale(1.2); }
 
 /* The Hero Modal (Video + Info) */
 .split-layout {
@@ -583,9 +531,6 @@ about {
 }
 .close-btn:hover { color: var(--accent-red) !important; }
 
-.close-settings { position: absolute; top: 10px; right: 15px; font-size: 24px; cursor: pointer; color: #aaa; }
-.close-settings:hover { color: #fff; }
-
 /* FOOTER */
 footer {
     background-color: #111337a8;
@@ -602,6 +547,7 @@ footer {
     max-width: 400px;
     margin: 0 auto;
     padding: 0 10px;
+    /* Forces the narrow footer to keep its structural integrity */
     box-sizing: border-box; 
 }
 
@@ -625,6 +571,7 @@ html {
 }
 
 .back-to-top {
+    /* Always floating relative to the main viewport screen edge */
     position: fixed;
     bottom: var(--footer-offset, 2rem);
     right: 1rem;
@@ -867,7 +814,7 @@ nav_bar{
     display: flex;
     justify-content: left;
     align-items: center;
-    padding: 20px 10%;
+    padding: 1px 50px;
     background-color: #070228b9;
     z-index: 20;
 }
@@ -880,7 +827,7 @@ nav_bar{
 }
 .nav__links li{
     display: inline-block;
-    padding: 0px 20px;
+    padding: 0px 15px;
 }
 
 .nav__links li a{
