@@ -5,6 +5,11 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>AniTease | Friendly Anime Teasers</title>
         <link rel="stylesheet" href="style.css">
+        <link rel="preconnect" href="https://graphql.anilist.co">
+        <link rel="preconnect" href="https://api.jikan.moe">
+        <link rel="preconnect" href="https://api.themoviedb.org">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
         <script>
         window.onYouTubeIframeAPIReady = function () {
@@ -28,7 +33,7 @@
         };
         </script>
         <script async src="https://www.youtube.com/iframe_api"></script>
-        <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+        <script async src="https://unpkg.com/@supabase/supabase-js@2"></script>
         <script type="module" src="main.js"></script>
         <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
     </head>
@@ -128,7 +133,6 @@
         </div>
 
         <div class="scroll-track-wrapper">
-            <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
             <a href="#" class="back-to-top" title="Back To Top">
                 <span class="material-symbols-outlined">arrow_upward</span>
             </a>
