@@ -1,4 +1,4 @@
-import { dom, liveBgUrl, staticBgUrl, state } from './state.js';
+import { dom, liveBgUrl, staticBgUrl, state, getUniqueGenres } from './state.js';
 
 export function renderAnimeCards(animeArray) {
     if (!dom.resultsContainer) return;
@@ -7,6 +7,14 @@ export function renderAnimeCards(animeArray) {
     }
     if (animeArray.length === 0 && state.filterMode === 'favorites') {
         dom.resultsContainer.innerHTML = `<p style="color: white; font-size: 1.2rem; text-align: center; width: 100%;">No favorites yet. Click the ♡ on an anime to add it!</p>`;
+        return;
+    }
+
+    if (state.activeGenre) {
+        animeArray = animeArray.filter(a => a.genres && a.genres.includes(state.activeGenre));
+    }
+    if (animeArray.length === 0 && state.activeGenre) {
+        dom.resultsContainer.innerHTML = `<p style="color: white; font-size: 1.2rem; text-align: center; width: 100%;">No anime found for genre "${state.activeGenre}".</p>`;
         return;
     }
 
@@ -93,6 +101,20 @@ export function animateSliderTrack() {
     requestAnimationFrame(animateSliderTrack);
 }
 
+export function buildGenrePills() {
+    const container = document.getElementById('genre-pills');
+    if (!container) return;
+    const genres = getUniqueGenres();
+    container.innerHTML = '<button class="genre-pill active" data-genre="">All Genres</button>';
+    genres.forEach(g => {
+        const pill = document.createElement('button');
+        pill.className = 'genre-pill' + (state.activeGenre === g ? ' active' : '');
+        pill.dataset.genre = g;
+        pill.textContent = g;
+        container.appendChild(pill);
+    });
+}
+
 export function refreshDisplay() {
     if (state.allAnimeData.length === 0) return;
     if (!dom.resultsContainer) return;
@@ -100,7 +122,7 @@ export function refreshDisplay() {
     renderAnimeCards(state.allAnimeData);
 
     if (dom.loadMoreBtn) {
-        if (state.filterMode === 'favorites') {
+        if (state.filterMode === 'favorites' || state.activeGenre) {
             dom.loadMoreBtn.style.display = 'none';
         } else {
             dom.loadMoreBtn.style.display = (state.hasMoreData && state.allAnimeData.length > 0) ? 'block' : 'none';

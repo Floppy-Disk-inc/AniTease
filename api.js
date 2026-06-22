@@ -1,5 +1,5 @@
 import { dom, state } from './state.js';
-import { renderAnimeCards } from './ui.js';
+import { renderAnimeCards, buildGenrePills } from './ui.js';
 
 const TMDB_API_KEY = "";
 
@@ -248,6 +248,7 @@ export async function fetchAnimeData(title = "", page = 1, isNewSearch = true) {
         state.allAnimeData = [];
         state.filterMode = 'all';
         state.sortBy = 'default';
+        state.activeGenre = null;
         const filterBtns = document.querySelectorAll('.filter-btn');
         filterBtns.forEach(b => b.classList.remove('active'));
         const allBtn = document.querySelector('.filter-btn[data-filter="all"]');
@@ -256,6 +257,10 @@ export async function fetchAnimeData(title = "", page = 1, isNewSearch = true) {
         sortBtns.forEach(b => b.classList.remove('active'));
         const defaultSort = document.querySelector('.sort-btn[data-sort="default"]');
         if (defaultSort) defaultSort.classList.add('active');
+        const genrePills = document.querySelectorAll('.genre-pill');
+        genrePills.forEach(p => p.classList.remove('active'));
+        const allGenre = document.querySelector('.genre-pill[data-genre=""]');
+        if (allGenre) allGenre.classList.add('active');
     }
 
     const isUpcomingFeed = title.trim() === "";
@@ -375,6 +380,7 @@ export async function fetchAnimeData(title = "", page = 1, isNewSearch = true) {
             state.allAnimeData = [...state.allAnimeData, ...processedAnime];
             renderAnimeCards(processedAnime);
             state.currentPage++;
+            if (isNewSearch) buildGenrePills();
 
         } else {
             state.hasMoreData = false;

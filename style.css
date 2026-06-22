@@ -326,6 +326,64 @@ about {
     color: #fff;
 }
 
+/* Genre Pills */
+.genre-pills {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 5px auto 15px;
+    max-width: 700px;
+}
+.genre-pill {
+    padding: 6px 16px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 16px;
+    background: transparent;
+    color: #999;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+.genre-pill:hover {
+    border-color: var(--accent-red);
+    color: #fff;
+}
+.genre-pill.active {
+    background: var(--accent-red);
+    border-color: var(--accent-red);
+    color: #fff;
+}
+
+.fav-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 36px;
+    height: 36px;
+    border: none;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.6);
+    color: #fff;
+    font-size: 1.3rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    z-index: 5;
+    backdrop-filter: blur(2px);
+    line-height: 1;
+}
+.fav-btn:hover {
+    transform: scale(1.2);
+    background: rgba(0, 0, 0, 0.8);
+}
+.fav-btn.faved {
+    color: var(--accent-red);
+    text-shadow: 0 0 8px rgba(220, 20, 60, 0.6);
+}
+
 .divider {
     border: 0;
     height: 1px;

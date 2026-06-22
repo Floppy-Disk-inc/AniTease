@@ -562,6 +562,18 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
+    const genreContainer = document.getElementById('genre-pills');
+    if (genreContainer) {
+        genreContainer.addEventListener('click', (e) => {
+            const pill = e.target.closest('.genre-pill');
+            if (!pill) return;
+            document.querySelectorAll('.genre-pill').forEach(p => p.classList.remove('active'));
+            pill.classList.add('active');
+            state.activeGenre = pill.dataset.genre || null;
+            refreshDisplay();
+        });
+    }
+
     const topBtn = document.querySelector('.back-to-top');
     const siteTitle = document.getElementById('site-top-title');
     const footer = document.querySelector('footer');

@@ -40,6 +40,7 @@ export const state = {
     favorites: new Set(JSON.parse(localStorage.getItem('aniTeaseFavorites')) || []),
     filterMode: 'all',
     sortBy: 'default',
+    activeGenre: null,
 };
 
 state.audio.loop = true;
@@ -56,4 +57,14 @@ export function toggleFavorite(id) {
         state.favorites.add(id);
     }
     saveFavorites();
+}
+
+export function getUniqueGenres() {
+    const genreSet = new Set();
+    state.allAnimeData.forEach(a => {
+        if (a.genres) {
+            a.genres.split(', ').forEach(g => genreSet.add(g));
+        }
+    });
+    return [...genreSet].sort();
 }
