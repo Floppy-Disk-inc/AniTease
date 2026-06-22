@@ -198,7 +198,7 @@ nav_bar .search-container {
     display: flex;
     align-items: center;
     gap: 10px;
-    margin: 0;
+    margin: 0 0 0 auto;
     max-width: none;
     position: static;
 }
@@ -209,7 +209,7 @@ nav_bar #search-input {
     color: var(--text-light);
     background-color: rgb(0, 0, 0);
     padding: 0 16px;
-    width: 280px;
+    width: 320px;
     height: 44px;
     font-size: 15px;
     backdrop-filter: blur(5px);
@@ -1016,6 +1016,8 @@ nav_bar{
     padding: 1px 50px;
     background-color: #070228b9;
     z-index: 20;
+    flex-wrap: nowrap;
+    gap: 12px;
 }
 .nav_logo{
     width: 60px;
