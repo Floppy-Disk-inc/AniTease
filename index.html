@@ -65,7 +65,21 @@
         
         <main>
             <h2 id="feed-title" style="color: white; margin-left: 20px; font-family: sans-serif;">Upcoming Anime</h2>
-            <hr class="divider">
+
+            <div class="filter-bar">
+                <button class="filter-btn active" data-filter="all">All</button>
+                <button class="filter-btn" data-filter="favorites">♥ Favorites</button>
+            </div>
+
+            <div class="sort-bar">
+                <span class="sort-label">Sort:</span>
+                <button class="sort-btn active" data-sort="default">Default</button>
+                <button class="sort-btn" data-sort="score">Score</button>
+                <button class="sort-btn" data-sort="popularity">Popularity</button>
+                <button class="sort-btn" data-sort="year">Year</button>
+                <button class="sort-btn" data-sort="title">A–Z</button>
+            </div>
+
             <div id="results-container"></div>
         </main>
 

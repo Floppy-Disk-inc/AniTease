@@ -10,6 +10,16 @@ export function renderAnimeCards(animeArray) {
         return;
     }
 
+    if (state.sortBy === 'score') {
+        animeArray = [...animeArray].sort((a, b) => (parseFloat(b.score) || 0) - (parseFloat(a.score) || 0));
+    } else if (state.sortBy === 'popularity') {
+        animeArray = [...animeArray].sort((a, b) => (b.members || 0) - (a.members || 0));
+    } else if (state.sortBy === 'year') {
+        animeArray = [...animeArray].sort((a, b) => (b.year || '0') > (a.year || '0') ? 1 : -1);
+    } else if (state.sortBy === 'title') {
+        animeArray = [...animeArray].sort((a, b) => (a.title || '').localeCompare(b.title || ''));
+    }
+
     let htmlContent = "";
 
     for (const anime of animeArray) {
@@ -81,6 +91,21 @@ export function animateSliderTrack() {
         dom.volSlider.style.background = `linear-gradient(to right, rgb(220, 20, 60) 0%, rgb(255, 255, 255) ${shift}%, rgb(220, 20, 60) ${state.currentVolPercentage}%, #333 ${state.currentVolPercentage}%, #333 100%)`;
     }
     requestAnimationFrame(animateSliderTrack);
+}
+
+export function refreshDisplay() {
+    if (state.allAnimeData.length === 0) return;
+    if (!dom.resultsContainer) return;
+    dom.resultsContainer.innerHTML = '';
+    renderAnimeCards(state.allAnimeData);
+
+    if (dom.loadMoreBtn) {
+        if (state.filterMode === 'favorites') {
+            dom.loadMoreBtn.style.display = 'none';
+        } else {
+            dom.loadMoreBtn.style.display = (state.hasMoreData && state.allAnimeData.length > 0) ? 'block' : 'none';
+        }
+    }
 }
 
 export function startModalCountdown(timeUntilSeconds, labelPrefix) {

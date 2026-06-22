@@ -1,6 +1,6 @@
 import { dom, liveBgUrl, staticBgUrl, state, toggleFavorite } from './state.js';
 import { fetchAnimeData, fetchAniListMasterData, fetchStudioHead, fetchANNStaffDetails, fetchRandomAnime, getTier2BackupTrailer, getTier3YouTubeTrailer } from './api.js';
-import { closeModal, initializeBackgroundSystem, animateSliderTrack, startModalCountdown } from './ui.js';
+import { closeModal, initializeBackgroundSystem, animateSliderTrack, startModalCountdown, refreshDisplay } from './ui.js';
 
 if (dom.bgToggle) {
     dom.bgToggle.addEventListener('change', () => {
@@ -541,6 +541,26 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
+
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    filterBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            filterBtns.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            state.filterMode = btn.dataset.filter;
+            refreshDisplay();
+        });
+    });
+
+    const sortBtns = document.querySelectorAll('.sort-btn');
+    sortBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            sortBtns.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            state.sortBy = btn.dataset.sort;
+            refreshDisplay();
+        });
+    });
 
     const topBtn = document.querySelector('.back-to-top');
     const siteTitle = document.getElementById('site-top-title');

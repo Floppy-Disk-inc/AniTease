@@ -38,6 +38,8 @@ export const state = {
     aniListMasterCache: {},
     studioHeadCache: {},
     favorites: new Set(JSON.parse(localStorage.getItem('aniTeaseFavorites')) || []),
+    filterMode: 'all',
+    sortBy: 'default',
 };
 
 state.audio.loop = true;
