@@ -23,6 +23,7 @@ export function renderAnimeCards(animeArray) {
     if (!dom.resultsContainer) return;
     if (state.filterMode === 'favorites') {
         animeArray = animeArray.filter(a => state.favorites.has(a.mal_id));
+        animeArray = animeArray.slice(0, state.favoritesLimit);
     }
     if (animeArray.length === 0 && state.filterMode === 'favorites') {
         dom.resultsContainer.innerHTML = `<p style="color: white; font-size: 1.2rem; text-align: center; width: 100%;">No favorites yet. Click the ♡ on an anime to add it!</p>`;
@@ -145,7 +146,7 @@ export function refreshDisplay() {
 
     if (dom.loadMoreBtn) {
         if (state.filterMode === 'favorites') {
-            dom.loadMoreBtn.style.display = (state.favorites.size > 20 && state.hasMoreData && state.allAnimeData.length > 0) ? 'block' : 'none';
+            dom.loadMoreBtn.style.display = (state.favorites.size > state.favoritesLimit && state.allAnimeData.length > 0) ? 'block' : 'none';
         } else if (state.activeGenre) {
             dom.loadMoreBtn.style.display = 'none';
         } else {

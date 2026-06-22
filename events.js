@@ -55,7 +55,14 @@ function initiateSearch() {
 
 if (dom.searchInput) dom.searchInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') initiateSearch(); });
 if (dom.searchButton) dom.searchButton.addEventListener('click', initiateSearch);
-if (dom.loadMoreBtn) dom.loadMoreBtn.addEventListener('click', () => fetchAnimeData(state.currentQuery, state.currentPage, false));
+if (dom.loadMoreBtn) dom.loadMoreBtn.addEventListener('click', () => {
+    if (state.filterMode === 'favorites') {
+        state.favoritesLimit += 20;
+        refreshDisplay();
+    } else {
+        fetchAnimeData(state.currentQuery, state.currentPage, false);
+    }
+});
 
 async function handleSurprise() {
     const btn = document.getElementById('surprise-btn');
@@ -487,6 +494,7 @@ if (dom.siteTopTitle && dom.searchInput) {
 function handleRoute() {
     if (window.location.hash === '#favorites') {
         state.filterMode = 'favorites';
+        state.favoritesLimit = 20;
         if (dom.feedTitle) dom.feedTitle.textContent = 'Your Favorites';
     } else {
         state.filterMode = 'all';

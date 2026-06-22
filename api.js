@@ -430,7 +430,7 @@ export async function fetchAnimeData(title = "", page = 1, isNewSearch = true) {
         dom.loadingScreen.style.display = 'none';
         if (dom.loadMoreBtn) {
             if (state.filterMode === 'favorites') {
-                dom.loadMoreBtn.style.display = (state.favorites.size > 20 && state.hasMoreData && state.allAnimeData.length > 0) ? 'block' : 'none';
+                dom.loadMoreBtn.style.display = (state.favorites.size > state.favoritesLimit && state.allAnimeData.length > 0) ? 'block' : 'none';
             } else if (state.activeGenre) {
                 dom.loadMoreBtn.style.display = 'none';
             } else {

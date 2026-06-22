@@ -41,6 +41,7 @@ export const state = {
     filterMode: 'all',
     sortBy: 'default',
     activeGenre: null,
+    favoritesLimit: 20,
 };
 
 state.audio.loop = true;
