@@ -291,7 +291,7 @@ export async function fetchAnimeData(title = "", page = 1, isNewSearch = true) {
       }
     }`;
 
-    let variables = { page: page, perPage: 40 };
+    let variables = { page: page, perPage: 20 };
     if (isUpcomingFeed) {
         variables.status = "NOT_YET_RELEASED";
     } else {
@@ -331,7 +331,7 @@ export async function fetchAnimeData(title = "", page = 1, isNewSearch = true) {
                 const episodes = anime.episodes || "TBA";
                 const synonyms = anime.synonyms || [];
 
-                const bestImage = anime.coverImage.extraLarge || anime.coverImage.large || anime.coverImage.medium;
+                const bestImage = anime.coverImage.large || anime.coverImage.medium || anime.coverImage.extraLarge;
                 const protectedYear = anime.seasonYear || anime.startDate?.year || "TBD";
 
                 let seasonLabel = "UPCOMING";
@@ -361,7 +361,7 @@ export async function fetchAnimeData(title = "", page = 1, isNewSearch = true) {
 
                 processedAnime.push(animeObject);
 
-                if (!trailerVideoId) {
+                if (!trailerVideoId && !isUpcomingFeed) {
                     const promise = getTier2BackupTrailer(anime.title.english, anime.title.romaji, anime.title.native, synonyms).then(backupId => {
                         if (backupId) animeObject.verified_video_id = backupId;
                     });
