@@ -249,10 +249,6 @@ export async function fetchAnimeData(title = "", page = 1, isNewSearch = true) {
         state.filterMode = 'all';
         state.sortBy = 'default';
         state.activeGenre = null;
-        const filterBtns = document.querySelectorAll('.filter-btn');
-        filterBtns.forEach(b => b.classList.remove('active'));
-        const allBtn = document.querySelector('.filter-btn[data-filter="all"]');
-        if (allBtn) allBtn.classList.add('active');
         const sortBtns = document.querySelectorAll('.sort-btn');
         sortBtns.forEach(b => b.classList.remove('active'));
         const defaultSort = document.querySelector('.sort-btn[data-sort="default"]');
@@ -378,9 +374,18 @@ export async function fetchAnimeData(title = "", page = 1, isNewSearch = true) {
             }
 
             state.allAnimeData = [...state.allAnimeData, ...processedAnime];
-            renderAnimeCards(processedAnime);
+            renderAnimeCards(isNewSearch ? state.allAnimeData : processedAnime);
             state.currentPage++;
-            if (isNewSearch) buildGenrePills();
+            if (isNewSearch) {
+                buildGenrePills();
+                if (window.location.hash === '#favorites') {
+                    state.filterMode = 'favorites';
+                    if (dom.resultsContainer) {
+                        dom.resultsContainer.innerHTML = '';
+                        renderAnimeCards(state.allAnimeData);
+                    }
+                }
+            }
 
         } else {
             state.hasMoreData = false;

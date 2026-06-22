@@ -484,6 +484,16 @@ if (dom.siteTopTitle && dom.searchInput) {
     });
 }
 
+function handleRoute() {
+    if (window.location.hash === '#favorites') {
+        state.filterMode = 'favorites';
+        if (dom.feedTitle) dom.feedTitle.textContent = 'Your Favorites';
+        refreshDisplay();
+    }
+}
+
+window.addEventListener('hashchange', handleRoute);
+
 function saveSearch(query) {
     if (!query) return;
     let history = JSON.parse(localStorage.getItem('aniTeaseHistory')) || [];
@@ -542,15 +552,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    const filterBtns = document.querySelectorAll('.filter-btn');
-    filterBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
-            filterBtns.forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            state.filterMode = btn.dataset.filter;
-            refreshDisplay();
-        });
-    });
+    handleRoute();
 
     const sortBtns = document.querySelectorAll('.sort-btn');
     sortBtns.forEach(btn => {
