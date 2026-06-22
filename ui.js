@@ -2,6 +2,13 @@ import { dom, liveBgUrl, staticBgUrl, state } from './state.js';
 
 export function renderAnimeCards(animeArray) {
     if (!dom.resultsContainer) return;
+    if (state.filterMode === 'favorites') {
+        animeArray = animeArray.filter(a => state.favorites.has(a.mal_id));
+    }
+    if (animeArray.length === 0 && state.filterMode === 'favorites') {
+        dom.resultsContainer.innerHTML = `<p style="color: white; font-size: 1.2rem; text-align: center; width: 100%;">No favorites yet. Click the ♡ on an anime to add it!</p>`;
+        return;
+    }
 
     let htmlContent = "";
 
@@ -13,6 +20,7 @@ export function renderAnimeCards(animeArray) {
         const score = anime.score || "N/A";
         const finalVideoId = anime.verified_video_id;
         const title = anime.title || "Unknown Title";
+        const faved = state.favorites.has(anime.mal_id);
 
         let seasonIcon = type === 'MOVIE' || type === 'Movie' ? '🎬' : '📺';
         if (anime.season) {
@@ -27,6 +35,7 @@ export function renderAnimeCards(animeArray) {
         htmlContent += `
             <div class="anime-card" data-id="${anime.mal_id}" data-video-id="${finalVideoId}" data-title="${title.replace(/"/g, '&quot;')}">
                 <div class="image-container" oncontextmenu="return false;" style="background-image: url('${anime.images.jpg.large_image_url}'); background-size: cover; background-position: center;">
+                    <button class="fav-btn ${faved ? 'faved' : ''}" data-id="${anime.mal_id}" title="${faved ? 'Remove from favorites' : 'Add to favorites'}">${faved ? '♥' : '♡'}</button>
                     <span class="anime-type">${type}</span>
                     <span class="anime-badge-season">${seasonIcon} ${anime.seasonLabel}</span>
                     <span class="anime-badge-year">📅${anime.year}</span>

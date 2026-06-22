@@ -37,7 +37,21 @@ export const state = {
     trailerCache: {},
     aniListMasterCache: {},
     studioHeadCache: {},
+    favorites: new Set(JSON.parse(localStorage.getItem('aniTeaseFavorites')) || []),
 };
 
 state.audio.loop = true;
 state.audio.volume = 0.5;
+
+export function saveFavorites() {
+    localStorage.setItem('aniTeaseFavorites', JSON.stringify([...state.favorites]));
+}
+
+export function toggleFavorite(id) {
+    if (state.favorites.has(id)) {
+        state.favorites.delete(id);
+    } else {
+        state.favorites.add(id);
+    }
+    saveFavorites();
+}

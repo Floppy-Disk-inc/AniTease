@@ -1,4 +1,4 @@
-import { dom, liveBgUrl, staticBgUrl, state } from './state.js';
+import { dom, liveBgUrl, staticBgUrl, state, toggleFavorite } from './state.js';
 import { fetchAnimeData, fetchAniListMasterData, fetchStudioHead, fetchANNStaffDetails, getTier2BackupTrailer, getTier3YouTubeTrailer } from './api.js';
 import { closeModal, initializeBackgroundSystem, animateSliderTrack, startModalCountdown } from './ui.js';
 
@@ -59,7 +59,20 @@ if (dom.loadMoreBtn) dom.loadMoreBtn.addEventListener('click', () => fetchAnimeD
 
 if (dom.resultsContainer) {
     dom.resultsContainer.addEventListener('click', async (event) => {
-        const card = event.target.closest('.anime-card');
+        const target = event.target;
+        const favBtn = target.closest('.fav-btn');
+        if (favBtn) {
+            event.stopPropagation();
+            const id = parseInt(favBtn.dataset.id);
+            toggleFavorite(id);
+            favBtn.classList.toggle('faved');
+            const isFaved = state.favorites.has(id);
+            favBtn.textContent = isFaved ? '♥' : '♡';
+            favBtn.title = isFaved ? 'Remove from favorites' : 'Add to favorites';
+            return;
+        }
+
+        const card = target.closest('.anime-card');
         if (!card) return;
 
         const animeId = parseInt(card.getAttribute('data-id'));
