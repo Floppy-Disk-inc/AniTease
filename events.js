@@ -488,8 +488,11 @@ function handleRoute() {
     if (window.location.hash === '#favorites') {
         state.filterMode = 'favorites';
         if (dom.feedTitle) dom.feedTitle.textContent = 'Your Favorites';
-        refreshDisplay();
+    } else {
+        state.filterMode = 'all';
+        if (dom.feedTitle) dom.feedTitle.textContent = 'Feed';
     }
+    refreshDisplay();
 }
 
 window.addEventListener('hashchange', handleRoute);
