@@ -60,14 +60,14 @@ if (dom.loadMoreBtn) dom.loadMoreBtn.addEventListener('click', () => fetchAnimeD
 async function handleSurprise() {
     const btn = document.getElementById('surprise-btn');
     if (btn) {
-        btn.textContent = '🎲 Rolling...';
+        btn.textContent = 'Rolling...';
         btn.disabled = true;
     }
 
     const anime = await fetchRandomAnime();
 
     if (btn) {
-        btn.textContent = '🎲 Surprise Me';
+        btn.textContent = 'Surprise Me';
         btn.disabled = false;
     }
 
