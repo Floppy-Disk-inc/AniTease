@@ -1101,7 +1101,7 @@ nav_bar{
     display: flex;
     gap: 12px;
     overflow-x: auto;
-    padding-bottom: 8px;
+    padding: 8px 0 16px 0;
     scroll-snap-type: x mandatory;
     -webkit-overflow-scrolling: touch;
 }
