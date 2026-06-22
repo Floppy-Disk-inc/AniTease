@@ -1,6 +1,7 @@
 import { dom, liveBgUrl, staticBgUrl, state, toggleFavorite } from './state.js';
 import { fetchAnimeData, fetchAniListMasterData, fetchStudioHead, fetchANNStaffDetails, fetchRandomAnime, getTier2BackupTrailer, getTier3YouTubeTrailer } from './api.js';
 import { closeModal, initializeBackgroundSystem, animateSliderTrack, startModalCountdown, refreshDisplay } from './ui.js';
+import { computeSimilar, renderSimilar } from './recommendations.js';
 
 if (dom.bgToggle) {
     dom.bgToggle.addEventListener('change', () => {
@@ -504,6 +505,9 @@ export async function openAnimeModal(clickedAnime) {
         if (castElem) {
             castElem.innerHTML = `<strong>Cast:</strong> ${castNames}`;
         }
+
+        const similar = computeSimilar(clickedAnime);
+        renderSimilar(similar);
 
     } catch (err) {
         console.error("Auxiliary background data failed processing:", err);
