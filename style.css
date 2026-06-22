@@ -1078,3 +1078,105 @@ nav_bar{
 .nav__links li a:hover{
     color: #970925;
 }
+
+/* ==========================================
+   SIMILAR ANIME SECTION IN MODAL
+   ========================================== */
+.similar-section {
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.similar-title {
+    color: #fff;
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.similar-scroll {
+    display: flex;
+    gap: 12px;
+    overflow-x: auto;
+    padding-bottom: 8px;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+}
+
+.similar-scroll::-webkit-scrollbar {
+    height: 6px;
+}
+
+.similar-scroll::-webkit-scrollbar-thumb {
+    background-color: var(--accent-red);
+    border-radius: 3px;
+}
+
+.similar-card {
+    flex: 0 0 120px;
+    background: linear-gradient(145deg, #1a1a2e 0%, #0f0f1a 100%);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+    scroll-snap-align: start;
+}
+
+.similar-card:hover {
+    transform: translateY(-4px) scale(1.02);
+    box-shadow: 0 8px 24px rgba(255, 40, 80, 0.3);
+    border-color: rgba(255, 40, 80, 0.3);
+}
+
+.similar-card:focus-visible {
+    outline: 2px solid var(--accent-red);
+    outline-offset: 2px;
+}
+
+.similar-card-poster {
+    width: 100%;
+    height: 170px;
+    background-size: cover;
+    background-position: center;
+    background-color: #1a1a2e;
+}
+
+.similar-card-info {
+    padding: 10px 8px;
+}
+
+.similar-card-title {
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: #fff;
+    line-height: 1.3;
+    margin: 0 0 4px 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.similar-card-genres {
+    font-size: 0.6rem;
+    color: rgba(255, 255, 255, 0.6);
+    text-transform: capitalize;
+    display: block;
+    margin-bottom: 4px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.similar-card-score {
+    font-size: 0.65rem;
+    color: #ffd700;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+}
