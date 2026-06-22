@@ -261,6 +261,7 @@ export async function fetchAnimeData(title = "", page = 1, isNewSearch = true) {
 
     const isUpcomingFeed = title.trim() === "";
 
+    let cacheRendered = false;
     if (isNewSearch && isUpcomingFeed) {
         try {
             const cached = sessionStorage.getItem('aniTeaseFeed');
@@ -270,6 +271,7 @@ export async function fetchAnimeData(title = "", page = 1, isNewSearch = true) {
                     state.allAnimeData = data;
                     state.globalUniqueIds = new Set(data.map(a => a.anilist_id));
                     dom.loadingScreen.style.display = 'none';
+                    cacheRendered = true;
                     renderAnimeCards(data);
                     buildGenrePills();
                 }
@@ -392,6 +394,9 @@ export async function fetchAnimeData(title = "", page = 1, isNewSearch = true) {
             }
 
             state.allAnimeData = [...state.allAnimeData, ...processedAnime];
+            if (cacheRendered && dom.resultsContainer) {
+                dom.resultsContainer.innerHTML = '';
+            }
             renderAnimeCards(isNewSearch ? state.allAnimeData : processedAnime);
             state.currentPage++;
             if (isNewSearch) {
