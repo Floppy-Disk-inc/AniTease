@@ -1,0 +1,43 @@
+export const dom = {
+    searchInput: document.getElementById('search-input'),
+    searchButton: document.getElementById('search-btn'),
+    resultsContainer: document.getElementById('results-container'),
+    loadMoreBtn: document.getElementById('load-more-btn'),
+    siteTopTitle: document.getElementById('site-top-title'),
+    feedTitle: document.getElementById('feed-title'),
+    modal: document.getElementById('trailer-modal'),
+    closeBtn: document.querySelector('.close-btn'),
+    settingsBtn: document.getElementById('settings-btn'),
+    settingsPanel: document.getElementById('settings-panel'),
+    closeSettings: document.querySelector('.close-settings'),
+    loadingScreen: document.getElementById('loading-screen'),
+    musicBtn: document.getElementById('music-btn'),
+    volSlider: document.getElementById('vol-slider'),
+    bgToggle: document.getElementById('bg-toggle'),
+};
+
+const isAboutPage = document.querySelector('about') !== null;
+
+export const liveBgUrl = isAboutPage ? "url('assets/outro.gif')" : "url('assets/bg.gif')";
+export const staticBgUrl = isAboutPage ? "url('assets/outro(static).png')" : "url('assets/bg(static).png')";
+
+export const state = {
+    currentPage: 1,
+    isFetching: false,
+    hasMoreData: true,
+    currentQuery: "",
+    globalUniqueIds: new Set(),
+    allAnimeData: [],
+    searchTimeout: null,
+    currentVolPercentage: 50,
+    animationTime: 0,
+    audio: new Audio("assets/music1.mp3"),
+    isPlaying: false,
+    countdownInterval: null,
+    trailerCache: {},
+    aniListMasterCache: {},
+    studioHeadCache: {},
+};
+
+state.audio.loop = true;
+state.audio.volume = 0.5;
