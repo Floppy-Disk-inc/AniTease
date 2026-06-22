@@ -194,67 +194,78 @@ about {
     text-shadow: 1px 1px 4px rgba(0,0,0,0.8);
 }
 
-.search-container {
+nav_bar .search-container {
     display: flex;
-    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin: 0;
+    max-width: none;
+    position: static;
 }
 
-#search-input {  
+nav_bar #search-input {  
     border: none;
-    border-radius: 12px;
+    border-radius: 25px;
     color: var(--text-light);
     background-color: rgb(0, 0, 0);
-    padding-left: 10px;
-    width: 522px !important;
-    height: 48px;
-    font-size: 16px;
+    padding: 0 16px;
+    width: 280px;
+    height: 44px;
+    font-size: 15px;
     backdrop-filter: blur(5px);
     transition: all 0.3s ease;
     user-select: text;
+    box-sizing: border-box;
 }
-#search-input::placeholder { color: #aaa; }
-#search-input:focus {
+nav_bar #search-input::placeholder { color: #aaa; }
+nav_bar #search-input:focus {
     outline: none;
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.6);
     background-color: rgba(0, 0, 0, 0.9);
 }
 
-#search-btn {
-    padding: 11px 24px;
-    border-radius: 12px;
+nav_bar #search-btn {
+    height: 44px;
+    padding: 0 22px;
+    border-radius: 25px;
     border: none;
     background-color: var(--accent-red);
     color: white;
-    font-size: 16px;
+    font-size: 15px;
     font-weight: bold;
     cursor: pointer;
     box-shadow: 0 4px 6px rgba(0,0,0,0.3);
     transition: transform 0.2s, background-color 0.2s;
+    display: flex;
+    align-items: center;
 }
-#search-btn:hover {
-    background-color: rgb(255, 40, 80) !important;
+nav_bar #search-btn:hover {
+    background-color: rgb(255, 40, 80);
     transform: scale(1.05);
 }
 
-#surprise-btn {
-    padding: 12px 20px;
+nav_bar #surprise-btn {
+    height: 44px;
+    padding: 0 20px;
     border-radius: 25px;
     border: 2px solid var(--accent-red);
     background: transparent;
     color: var(--text-light);
-    font-size: 15px;
+    font-size: 14px;
     font-weight: bold;
     cursor: pointer;
     transition: all 0.3s;
     white-space: nowrap;
+    display: flex;
+    align-items: center;
 }
-#surprise-btn:hover {
+nav_bar #surprise-btn:hover {
     background: var(--accent-red);
     color: white;
     transform: scale(1.05);
     box-shadow: 0 0 20px rgba(220, 20, 60, 0.4);
 }
-#surprise-btn:disabled {
+nav_bar #surprise-btn:disabled {
     opacity: 0.6;
     cursor: not-allowed;
     transform: none;

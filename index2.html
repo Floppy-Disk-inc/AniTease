@@ -5,8 +5,33 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>AniTease | About Us</title>
         <link rel="stylesheet" href="style.css">
+        <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
         <link rel="icon" type="image/x-icon" href="assets/favicon.ico">
         <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@900&display=swap" rel="stylesheet">
+        <script>
+        window.onYouTubeIframeAPIReady = function () {
+            var p = document.getElementById('trailer-player');
+            if (!p) return;
+            window.__ytPlayer = new YT.Player('trailer-player', {
+                height: '450',
+                width: '100%',
+                videoId: '',
+                playerVars: { 'autoplay': 1, 'rel': 0, 'modestbranding': 1 },
+                events: {
+                    'onReady': function (e) {
+                        window.__ytPlayerReady = true;
+                        if (window.__pendingVideoId) {
+                            e.target.loadVideoById(window.__pendingVideoId);
+                            window.__pendingVideoId = null;
+                        }
+                    }
+                }
+            });
+        };
+        </script>
+        <script async src="https://www.youtube.com/iframe_api"></script>
+        <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+        <script type="module" src="main.js"></script>
     </head>
     <body>
         <style>
@@ -31,9 +56,18 @@
             <nav>
                 <ul class="nav__links">
                     <li><a href="index.html">HOME</a></li>
+                    <li><a href="index.html#favorites">FAVORITES</a></li>
                     <li><a href="index2.html">ABOUT</a></li>                    
                 </ul>
             </nav>
+            <div class="search-container">
+                <div class="search-input-wrapper">
+                    <input type="text" id="search-input" placeholder="Search for a teaser... (e.g., Naruto)" autocomplete="off">
+                    <div id="recent-searches" class="recent-searches-dropdown"></div>
+                </div>
+                <button id="search-btn">Search</button>
+                <button id="surprise-btn">Surprise Me</button>
+            </div>
         </nav_bar>
         <header class="header">
             <h1 id="site-top-title">
