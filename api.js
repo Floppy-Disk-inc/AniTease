@@ -1,7 +1,7 @@
 import { dom, state } from './state.js';
 import { renderAnimeCards, buildGenrePills } from './ui.js';
 
-const TMDB_API_KEY = "";
+const TMDB_API_KEY = "0f8828789e9c3e479561d16641621a73";
 
 export async function getTier2BackupTrailer(english, romaji, native, synonyms = []) {
     const searchTitles = [...new Set([english, romaji, native, ...synonyms])].filter(Boolean);
