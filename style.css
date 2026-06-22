@@ -470,6 +470,8 @@ nav_bar #surprise-btn:disabled {
     justify-content: flex-start; 
     height: auto; 
     padding-bottom: 16px;
+    content-visibility: auto;
+    contain-intrinsic-size: 400px;
 }
 .anime-card:hover {
     transform: translateY(-8px) scale(1.02);

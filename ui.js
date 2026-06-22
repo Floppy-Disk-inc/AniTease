@@ -1,5 +1,24 @@
 import { dom, liveBgUrl, staticBgUrl, state, getUniqueGenres } from './state.js';
 
+let lazyObserver = null;
+
+function observeLazyImages() {
+    if (!lazyObserver) {
+        lazyObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const el = entry.target;
+                    const bg = el.dataset.bg;
+                    if (bg) el.style.backgroundImage = `url('${bg}')`;
+                    el.classList.remove('lazy-bg');
+                    lazyObserver.unobserve(el);
+                }
+            });
+        }, { rootMargin: '200px' });
+    }
+    document.querySelectorAll('.lazy-bg').forEach(el => lazyObserver.observe(el));
+}
+
 export function renderAnimeCards(animeArray) {
     if (!dom.resultsContainer) return;
     if (state.filterMode === 'favorites') {
@@ -52,7 +71,7 @@ export function renderAnimeCards(animeArray) {
 
         htmlContent += `
             <div class="anime-card" data-id="${anime.mal_id}" data-video-id="${finalVideoId}" data-title="${title.replace(/"/g, '&quot;')}">
-                <div class="image-container" oncontextmenu="return false;" style="background-image: url('${anime.images.jpg.large_image_url}'); background-size: cover; background-position: center;">
+                <div class="image-container lazy-bg" oncontextmenu="return false;" data-bg="${anime.images.jpg.large_image_url}" style="background-size: cover; background-position: center;">
                     <button class="fav-btn ${faved ? 'faved' : ''}" data-id="${anime.mal_id}" title="${faved ? 'Remove from favorites' : 'Add to favorites'}">${faved ? '♥' : '♡'}</button>
                     <span class="anime-type">${type}</span>
                     <span class="anime-badge-season">${seasonIcon} ${anime.seasonLabel}</span>
@@ -67,7 +86,10 @@ export function renderAnimeCards(animeArray) {
         `;
     }
 
-    if (htmlContent) dom.resultsContainer.insertAdjacentHTML('beforeend', htmlContent);
+    if (htmlContent) {
+        dom.resultsContainer.insertAdjacentHTML('beforeend', htmlContent);
+        observeLazyImages();
+    }
 }
 
 export function closeModal() {

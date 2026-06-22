@@ -261,6 +261,24 @@ export async function fetchAnimeData(title = "", page = 1, isNewSearch = true) {
 
     const isUpcomingFeed = title.trim() === "";
 
+    if (isNewSearch && isUpcomingFeed) {
+        try {
+            const cached = sessionStorage.getItem('aniTeaseFeed');
+            if (cached) {
+                const data = JSON.parse(cached);
+                if (Array.isArray(data) && data.length > 0) {
+                    state.allAnimeData = data;
+                    state.globalUniqueIds = new Set(data.map(a => a.anilist_id));
+                    dom.loadingScreen.style.display = 'none';
+                    renderAnimeCards(data);
+                    buildGenrePills();
+                }
+            }
+        } catch (e) {
+            sessionStorage.removeItem('aniTeaseFeed');
+        }
+    }
+
     if (dom.feedTitle && isNewSearch) {
         dom.feedTitle.textContent = isUpcomingFeed ? "Upcoming Anime" : `Showing Results For "${title}"`;
     }
@@ -385,6 +403,10 @@ export async function fetchAnimeData(title = "", page = 1, isNewSearch = true) {
                         renderAnimeCards(state.allAnimeData);
                     }
                 }
+            }
+
+            if (isUpcomingFeed) {
+                try { sessionStorage.setItem('aniTeaseFeed', JSON.stringify(state.allAnimeData)); } catch (e) {}
             }
 
         } else {
