@@ -1,5 +1,5 @@
 import { dom, liveBgUrl, staticBgUrl, state, toggleFavorite } from './state.js';
-import { fetchAnimeData, fetchAniListMasterData, fetchStudioHead, fetchANNStaffDetails, getTier2BackupTrailer, getTier3YouTubeTrailer } from './api.js';
+import { fetchAnimeData, fetchAniListMasterData, fetchStudioHead, fetchANNStaffDetails, fetchRandomAnime, getTier2BackupTrailer, getTier3YouTubeTrailer } from './api.js';
 import { closeModal, initializeBackgroundSystem, animateSliderTrack, startModalCountdown } from './ui.js';
 
 if (dom.bgToggle) {
@@ -56,6 +56,26 @@ function initiateSearch() {
 if (dom.searchInput) dom.searchInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') initiateSearch(); });
 if (dom.searchButton) dom.searchButton.addEventListener('click', initiateSearch);
 if (dom.loadMoreBtn) dom.loadMoreBtn.addEventListener('click', () => fetchAnimeData(state.currentQuery, state.currentPage, false));
+
+async function handleSurprise() {
+    const btn = document.getElementById('surprise-btn');
+    if (btn) {
+        btn.textContent = '🎲 Rolling...';
+        btn.disabled = true;
+    }
+
+    const anime = await fetchRandomAnime();
+
+    if (btn) {
+        btn.textContent = '🎲 Surprise Me';
+        btn.disabled = false;
+    }
+
+    if (anime) {
+        openAnimeModal(anime);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+}
 
 if (dom.resultsContainer) {
     dom.resultsContainer.addEventListener('click', async (event) => {
@@ -501,6 +521,11 @@ function displaySearchHistory() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+    const surpriseBtn = document.getElementById('surprise-btn');
+    if (surpriseBtn) {
+        surpriseBtn.addEventListener('click', handleSurprise);
+    }
+
     const searchInput = document.getElementById('search-input');
     const searchBtn = document.getElementById('search-btn');
     const dropdown = document.getElementById('recent-searches');

@@ -402,3 +402,77 @@ export async function fetchAnimeData(title = "", page = 1, isNewSearch = true) {
 }
 
 
+export async function fetchRandomAnime() {
+    if (state.allAnimeData.length > 0) {
+        const pick = state.allAnimeData[Math.floor(Math.random() * state.allAnimeData.length)];
+        return pick;
+    }
+
+    const url = 'https://graphql.anilist.co';
+    const query = `
+    query ($page: Int) {
+      Page (page: $page, perPage: 1) {
+        media (type: ANIME, sort: POPULARITY_DESC, isAdult: false) {
+          id idMal
+          title { english romaji native }
+          coverImage { extraLarge large }
+          description
+          averageScore
+          popularity
+          format
+          season
+          seasonYear
+          episodes
+          source
+          genres
+          studios(isMain: true) { nodes { name } }
+          trailer { id site }
+        }
+      }
+    }`;
+
+    const randomPage = Math.floor(Math.random() * 100) + 1;
+    try {
+        const res = await fetch(url, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+            body: JSON.stringify({ query, variables: { page: randomPage } })
+        });
+        const result = await res.json();
+        const anime = result.data?.Page?.media?.[0];
+        if (!anime) return null;
+
+        const mainTitle = (anime.title.english && anime.title.english.trim() !== "")
+            ? anime.title.english
+            : (anime.title.romaji || anime.title.native || "Unknown Title");
+
+        let trailerVideoId = null;
+        if (anime.trailer && anime.trailer.site === 'youtube') {
+            trailerVideoId = anime.trailer.id;
+        }
+
+        const seasonLabel = anime.season ? `${anime.season.toUpperCase()}` : "UPCOMING";
+
+        return {
+            anilist_id: anime.id,
+            mal_id: anime.idMal || anime.id,
+            title: mainTitle,
+            images: { jpg: { large_image_url: anime.coverImage.extraLarge || anime.coverImage.large } },
+            description: anime.description || "No official lore has been released yet.",
+            type: anime.format || "TV",
+            score: anime.averageScore ? (anime.averageScore / 10).toFixed(1) : "N/A",
+            members: anime.popularity || 0,
+            verified_video_id: trailerVideoId,
+            season: anime.season || "Upcoming",
+            seasonLabel: seasonLabel,
+            year: anime.seasonYear || "TBD",
+            studio: anime.studios?.nodes?.[0]?.name || "Unknown Studio",
+            genres: anime.genres ? anime.genres.slice(0, 3).join(", ") : "Anime",
+            episodes: anime.episodes || "TBA",
+            source: anime.source ? anime.source.replace(/_/g, ' ') : "Original"
+        };
+    } catch (e) {
+        console.error("Random fetch failed:", e);
+        return null;
+    }
+}

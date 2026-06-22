@@ -236,6 +236,30 @@ about {
     transform: scale(1.05);
 }
 
+#surprise-btn {
+    padding: 12px 20px;
+    border-radius: 25px;
+    border: 2px solid var(--accent-red);
+    background: transparent;
+    color: var(--text-light);
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s;
+    white-space: nowrap;
+}
+#surprise-btn:hover {
+    background: var(--accent-red);
+    color: white;
+    transform: scale(1.05);
+    box-shadow: 0 0 20px rgba(220, 20, 60, 0.4);
+}
+#surprise-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
+
 .divider {
     border: 0;
     height: 1px;
