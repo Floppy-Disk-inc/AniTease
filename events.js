@@ -554,6 +554,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
     handleRoute();
 
+    const filterToggle = document.getElementById('filter-toggle');
+    const filterDropdown = document.getElementById('filter-dropdown');
+    if (filterToggle && filterDropdown) {
+        filterToggle.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const isOpen = filterDropdown.style.display !== 'none';
+            filterDropdown.style.display = isOpen ? 'none' : 'block';
+            filterToggle.classList.toggle('open', !isOpen);
+            filterToggle.textContent = isOpen ? 'Filter ▾' : 'Filter ▴';
+        });
+        document.addEventListener('click', (e) => {
+            if (!filterToggle.contains(e.target) && !filterDropdown.contains(e.target)) {
+                filterDropdown.style.display = 'none';
+                filterToggle.classList.remove('open');
+                filterToggle.textContent = 'Filter ▾';
+            }
+        });
+    }
+
     const sortBtns = document.querySelectorAll('.sort-btn');
     sortBtns.forEach(btn => {
         btn.addEventListener('click', () => {

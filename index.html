@@ -67,16 +67,20 @@
         <main>
             <h2 id="feed-title" style="color: white; margin-left: 20px; font-family: sans-serif;">Upcoming Anime</h2>
 
-            <div class="sort-bar">
-                <span class="sort-label">Sort:</span>
-                <button class="sort-btn active" data-sort="default">Default</button>
-                <button class="sort-btn" data-sort="score">Score</button>
-                <button class="sort-btn" data-sort="popularity">Popularity</button>
-                <button class="sort-btn" data-sort="year">Year</button>
-                <button class="sort-btn" data-sort="title">A–Z</button>
-            </div>
+            <button id="filter-toggle" class="filter-pill">Filter ▾</button>
 
-            <div id="genre-pills" class="genre-pills"></div>
+            <div id="filter-dropdown" class="filter-dropdown" style="display: none;">
+                <div class="sort-bar">
+                    <span class="sort-label">Sort:</span>
+                    <button class="sort-btn active" data-sort="default">Default</button>
+                    <button class="sort-btn" data-sort="score">Score</button>
+                    <button class="sort-btn" data-sort="popularity">Popularity</button>
+                    <button class="sort-btn" data-sort="year">Year</button>
+                    <button class="sort-btn" data-sort="title">A–Z</button>
+                </div>
+
+                <div id="genre-pills" class="genre-pills"></div>
+            </div>
 
             <div id="results-container"></div>
         </main>

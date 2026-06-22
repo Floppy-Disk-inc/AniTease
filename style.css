@@ -384,6 +384,46 @@ about {
     text-shadow: 0 0 8px rgba(220, 20, 60, 0.6);
 }
 
+.filter-pill {
+    display: block;
+    margin: 0 auto 12px;
+    padding: 8px 22px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 20px;
+    background: rgba(20, 20, 20, 0.85);
+    color: #ccc;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    backdrop-filter: blur(4px);
+    user-select: none;
+}
+.filter-pill:hover {
+    border-color: var(--accent-red);
+    color: #fff;
+    background: rgba(30, 30, 30, 0.9);
+}
+.filter-pill.open {
+    border-color: var(--accent-red);
+    color: var(--accent-red);
+}
+
+.filter-dropdown {
+    max-width: 600px;
+    margin: 0 auto 16px;
+    padding: 16px 20px 8px;
+    background: rgba(15, 15, 15, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    backdrop-filter: blur(6px);
+}
+.filter-dropdown .sort-bar {
+    margin: 0 0 10px;
+}
+.filter-dropdown .genre-pills {
+    margin: 0;
+}
+
 .divider {
     border: 0;
     height: 1px;
