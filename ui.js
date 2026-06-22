@@ -144,7 +144,9 @@ export function refreshDisplay() {
     renderAnimeCards(state.allAnimeData);
 
     if (dom.loadMoreBtn) {
-        if (state.filterMode === 'favorites' || state.activeGenre) {
+        if (state.filterMode === 'favorites') {
+            dom.loadMoreBtn.style.display = (state.favorites.size > 20 && state.hasMoreData && state.allAnimeData.length > 0) ? 'block' : 'none';
+        } else if (state.activeGenre) {
             dom.loadMoreBtn.style.display = 'none';
         } else {
             dom.loadMoreBtn.style.display = (state.hasMoreData && state.allAnimeData.length > 0) ? 'block' : 'none';
