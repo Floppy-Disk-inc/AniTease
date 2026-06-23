@@ -279,6 +279,8 @@ if (spEl) {
         if (total) startSpotlightAutoplay(total);
     });
 }
+
+export function startModalCountdown(timeUntilSeconds, labelPrefix) {
     clearInterval(state.countdownInterval);
     const targetElement = document.getElementById('modal-countdown');
     if (!targetElement) return;
