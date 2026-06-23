@@ -1015,11 +1015,11 @@ nav_bar{
     display: flex;
     justify-content: left;
     align-items: center;
-    padding: 1px 50px;
+    padding: 10px 50px;
     background-color: #070228b9;
     z-index: 20;
     flex-wrap: nowrap;
-    gap: 12px;
+    gap: 2px;
 }
 .nav_logo{
     width: 60px;
