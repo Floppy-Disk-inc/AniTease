@@ -279,26 +279,3 @@ if (spEl) {
         if (total) startSpotlightAutoplay(total);
     });
 }
-
-export function startModalCountdown(timeUntilSeconds, labelPrefix) {
-    clearInterval(state.countdownInterval);
-    const targetElement = document.getElementById('modal-countdown');
-    if (!targetElement) return;
-
-    let timeLeft = timeUntilSeconds;
-    state.countdownInterval = setInterval(() => {
-        if (timeLeft <= 0) {
-            targetElement.textContent = `Broadcast has commenced! Refresh for updates.`;
-            clearInterval(state.countdownInterval);
-            return;
-        }
-
-        const days = Math.floor(timeLeft / 86400);
-        const hours = Math.floor((timeLeft % 86400) / 3600);
-        const minutes = Math.floor((timeLeft % 3600) / 60);
-        const seconds = timeLeft % 60;
-
-        targetElement.textContent = `${labelPrefix}${days}d ${hours}h ${minutes}m ${seconds}s`;
-        timeLeft--;
-    }, 1000);
-}
