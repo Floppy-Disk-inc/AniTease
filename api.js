@@ -237,7 +237,10 @@ export async function fetchANNStaffDetails(animeTitle) {
 export async function fetchSpotlightAnime() {
     if (state.spotlightAnime && state.spotlightAnime.length > 0) return state.spotlightAnime;
     try {
-        const res = await fetch('https://api.jikan.moe/v4/top/anime?filter=bypopularity&limit=8');
+        const ctrl = new AbortController();
+        const t = setTimeout(() => ctrl.abort(), 5000);
+        const res = await fetch('https://api.jikan.moe/v4/top/anime?filter=bypopularity&limit=8', { signal: ctrl.signal });
+        clearTimeout(t);
         if (!res.ok) return [];
         const json = await res.json();
         const items = (json.data || []).map(a => {
