@@ -18,8 +18,8 @@ export const dom = {
 
 const isAboutPage = document.querySelector('about') !== null;
 
-export const liveBgUrl = isAboutPage ? "url('assets/outro.gif')" : "url('assets/bg.gif')";
-export const staticBgUrl = isAboutPage ? "url('assets/outro(static).png')" : "url('assets/bg(static).png')";
+export const liveBgUrl = 'none';
+export const staticBgUrl = 'none';
 
 export const state = {
     currentPage: 1,

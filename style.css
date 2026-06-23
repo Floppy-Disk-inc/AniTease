@@ -6,7 +6,7 @@
 
 :root {
     interpolate-size: allow-keywords;
-    --primary-bg: rgb(11, 11, 11);
+    --primary-bg: rgb(26, 26, 26);
     --accent-red: rgb(220, 20, 60);
     --card-bg: rgba(0, 0, 0, 0.945);
     --text-dark: #222;
@@ -619,11 +619,23 @@ nav_bar #surprise-btn:disabled {
 .split-layout.no-video-mode { max-width: 700px !important; }
 
 #modal-video-section {
-    flex: 2; 
-    display: flex; align-items: center; justify-content: center;
+    flex: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
 }
 
 #trailer-player { width: 100%; height: 450px; border-radius: 8px; }
+
+.modal-video-disclaimer {
+    margin-top: 12px;
+    color: #aaa;
+    font-size: 0.82rem;
+    line-height: 1.4;
+    text-align: center;
+    max-width: 100%;
+}
 
 #modal-info-section {
     flex: 1.2; 
@@ -701,15 +713,17 @@ nav_bar #surprise-btn:disabled {
 .stream-pill {
     display: inline-flex;
     align-items: center;
-    padding: 6px 14px;
+    padding: 6px 12px;
     background: #16161a;
     border: 1px solid #333;
     color: #fff;
     text-decoration: none;
-    font-size: 0.8rem;
+    font-size: 0.82rem;
     font-weight: bold;
     border-radius: 20px;
     transition: all 0.2s ease;
+    position: relative;
+    overflow: visible;
 }
 .stream-pill:hover {
     background: var(--accent-red);
@@ -717,6 +731,31 @@ nav_bar #surprise-btn:disabled {
     transform: translateY(-2px);
     box-shadow: 0 4px 10px rgba(220, 20, 60, 0.4);
 }
+
+.stream-logo {
+    width: 28px;
+    height: auto;
+    display: inline-block;
+    vertical-align: middle;
+    position: relative;
+    z-index: 3;
+}
+.stream-label { vertical-align: middle; position: relative; z-index: 2; font-size: 0.82rem; }
+
+.stream-logo-wrap {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    background: #fff;
+    border-radius: 50%;
+    margin-right: 8px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+    flex-shrink: 0;
+}
+
+.stream-pill:hover .stream-logo-wrap { background: #fff; }
 
 /* The Rescued Close Button - !important flags enforce its layering */
 .close-btn {

@@ -326,7 +326,7 @@ export async function openAnimeModal(clickedAnime) {
 
         const allowedStreamingSites = [
             'crunchyroll', 'netflix', 'hulu', 'hidive', 'amazon', 'amazon prime video',
-            'disney+', 'funimation', 'tubi', 'youtube'
+            'disney+', 'funimation', 'tubi', 'youtube', 'justwatch'
         ];
 
         let linksToRender = [];
@@ -348,6 +348,12 @@ export async function openAnimeModal(clickedAnime) {
             streamsContainer.innerHTML = "";
             const seenSites = new Set();
             const cleanStreamingLinks = [];
+            const logoMap = {
+                'crunchyroll': 'assets/Crunchyrolllogo.png',
+                'netflix': 'assets/Netflixlogo.png',
+                'youtube': 'assets/Youtubelogo.png',
+                'justwatch': 'assets/JSlogo.png'
+            };
 
             linksToRender.forEach(link => {
                 const lowerSite = link.site.toLowerCase();
@@ -363,7 +369,6 @@ export async function openAnimeModal(clickedAnime) {
                     pill.href = link.url;
                     pill.target = "_blank";
                     pill.className = "stream-pill";
-                    pill.textContent = link.site;
 
                     const siteKey = link.site.toLowerCase();
                     if (platformStyles[siteKey]) {
@@ -375,6 +380,26 @@ export async function openAnimeModal(clickedAnime) {
                         pill.style.color = "#ffffff";
                         pill.style.borderColor = "#444444";
                     }
+
+                    const logoSrc = logoMap[siteKey] || logoMap[siteKey.replace(/\s+/g, '')];
+                    if (logoSrc) {
+                        const wrap = document.createElement('span');
+                        wrap.className = 'stream-logo-wrap';
+                        const img = document.createElement('img');
+                        img.src = logoSrc;
+                        img.alt = link.site + ' logo';
+                        img.className = 'stream-logo';
+                        wrap.appendChild(img);
+                        pill.appendChild(wrap);
+
+                        const span = document.createElement('span');
+                        span.className = 'stream-label';
+                        span.textContent = link.site;
+                        pill.appendChild(span);
+                    } else {
+                        pill.textContent = link.site;
+                    }
+
                     streamsContainer.appendChild(pill);
                 });
             } else {
@@ -382,7 +407,20 @@ export async function openAnimeModal(clickedAnime) {
                 fallbackPill.href = `https://www.justwatch.com/us/search?q=${encodeURIComponent(title)}`;
                 fallbackPill.target = "_blank";
                 fallbackPill.className = "stream-pill fallback-pill";
-                fallbackPill.textContent = "JustWatch";
+
+                const wrap = document.createElement('span');
+                wrap.className = 'stream-logo-wrap';
+                const img = document.createElement('img');
+                img.src = logoMap['justwatch'];
+                img.alt = 'JustWatch logo';
+                img.className = 'stream-logo';
+                wrap.appendChild(img);
+                fallbackPill.appendChild(wrap);
+
+                const span = document.createElement('span');
+                span.className = 'stream-label';
+                span.textContent = 'JustWatch';
+                fallbackPill.appendChild(span);
 
                 fallbackPill.style.backgroundColor = platformStyles['justwatch'].bg;
                 fallbackPill.style.color = platformStyles['justwatch'].text;
@@ -638,3 +676,35 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 });
+
+    const surpriseBtn = document.getElementById('surprise-btn');
+    const searchInput = document.getElementById('search-input');
+    const searchBtn = document.getElementById('search-btn');
+    const dropdown = document.querySelector('.dropdown');
+    
+    const hideSearchElements = () => {
+        const isAboutPage = window.location.pathname.replace(/\/$/, '').endsWith('/about')
+            || window.location.pathname.replace(/\/$/, '').endsWith('/about.html')
+            || window.location.hash === '#about'
+            || document.querySelector('about') !== null;
+        if (isAboutPage) {
+            if (surpriseBtn) surpriseBtn.style.display = 'none';
+            if (searchInput) searchInput.style.display = 'none';
+            if (searchBtn) searchBtn.style.display = 'none';
+            if (dropdown instanceof HTMLElement) dropdown.style.display = 'none';
+        } else {
+            if (surpriseBtn) surpriseBtn.style.display = '';
+            if (searchInput) searchInput.style.display = '';
+            if (searchBtn) searchBtn.style.display = '';
+            if (dropdown instanceof HTMLElement) dropdown.style.display = '';
+        }
+    };
+    
+    hideSearchElements();
+    window.addEventListener('hashchange', hideSearchElements);
+    window.addEventListener('popstate', hideSearchElements);
+
+    const aboutLinks = document.querySelectorAll('a[href="about.html"], a[href="./about.html"], a[href="/about.html"]');
+    aboutLinks.forEach(link => link.addEventListener('click', () => {
+        hideSearchElements();
+    }));
