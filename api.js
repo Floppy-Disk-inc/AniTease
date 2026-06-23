@@ -239,18 +239,17 @@ export async function fetchSpotlightAnime() {
     try {
         const ctrl = new AbortController();
         const t = setTimeout(() => ctrl.abort(), 5000);
-        const res = await fetch('https://api.jikan.moe/v4/top/anime?filter=bypopularity&limit=8', { signal: ctrl.signal });
+        const res = await fetch('https://api.jikan.moe/v4/seasons/now?limit=8', { signal: ctrl.signal });
         clearTimeout(t);
         if (!res.ok) return [];
         const json = await res.json();
         const items = (json.data || []).map(a => {
-            const backdrop = a.trailer?.images?.maximum_image_url || a.images?.jpg?.large_image_url || '';
             return {
                 mal_id: a.mal_id,
                 title: a.title || a.title_english || a.title_japanese || 'Unknown',
                 japanese_title: a.title_japanese || '',
                 image: a.images?.jpg?.large_image_url || '',
-                backdrop: backdrop,
+                backdrop: a.images?.jpg?.large_image_url || '',
                 type: a.type || 'TV',
                 score: a.score ? a.score.toFixed(1) : 'N/A',
                 episodes: a.episodes || '?',
