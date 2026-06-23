@@ -234,6 +234,39 @@ export async function fetchANNStaffDetails(animeTitle) {
     }
 }
 
+export async function fetchSpotlightAnime() {
+    if (state.spotlightAnime && state.spotlightAnime.length > 0) return state.spotlightAnime;
+    try {
+        const res = await fetch('https://api.jikan.moe/v4/top/anime?filter=bypopularity&limit=8');
+        if (!res.ok) return [];
+        const json = await res.json();
+        const items = (json.data || []).map(a => {
+            const backdrop = a.trailer?.images?.maximum_image_url || a.images?.jpg?.large_image_url || '';
+            return {
+                mal_id: a.mal_id,
+                title: a.title || a.title_english || a.title_japanese || 'Unknown',
+                japanese_title: a.title_japanese || '',
+                image: a.images?.jpg?.large_image_url || '',
+                backdrop: backdrop,
+                type: a.type || 'TV',
+                score: a.score ? a.score.toFixed(1) : 'N/A',
+                episodes: a.episodes || '?',
+                year: a.year || a.aired?.from?.slice(0, 4) || 'TBD',
+                description: a.synopsis ? a.synopsis.slice(0, 280) + (a.synopsis.length > 280 ? '...' : '') : 'No description available.',
+                quality: 'HD',
+                duration: a.duration || '24 min',
+                aired: a.aired?.from ? new Date(a.aired.from).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }) : 'TBA',
+                genres: (a.genres || []).slice(0, 3).map(g => g.name).join(', ')
+            };
+        });
+        state.spotlightAnime = items;
+        return items;
+    } catch (e) {
+        console.warn('Spotlight fetch failed:', e);
+        return [];
+    }
+}
+
 export async function fetchAnimeData(title = "", page = 1, isNewSearch = true) {
     if (state.isFetching || (!state.hasMoreData && !isNewSearch)) return;
     state.isFetching = true;

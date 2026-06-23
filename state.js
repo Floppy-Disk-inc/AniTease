@@ -22,6 +22,7 @@ export const liveBgUrl = 'none';
 export const staticBgUrl = 'none';
 
 export const state = {
+    spotlightAnime: [],
     currentPage: 1,
     isFetching: false,
     hasMoreData: true,

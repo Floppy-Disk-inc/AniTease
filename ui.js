@@ -177,3 +177,126 @@ export function startModalCountdown(timeUntilSeconds, labelPrefix) {
         timeLeft--;
     }, 1000);
 }
+
+/* ───────── Spotlight Carousel ───────── */
+
+let spotlightInterval = null;
+
+export function renderSpotlight(items) {
+    const section = document.getElementById('spotlight');
+    const slider = document.getElementById('spotlight-slider');
+    const dots = document.getElementById('spotlight-dots');
+    if (!section || !slider || !dots || !items.length) return;
+
+    section.style.display = 'block';
+    slider.innerHTML = '';
+    dots.innerHTML = '';
+
+    items.forEach((item, i) => {
+        const slide = document.createElement('div');
+        slide.className = 'spotlight-slide' + (i === 0 ? ' active' : '');
+        slide.innerHTML = `
+            <div class="spotlight-bg" style="background-image: url('${item.backdrop}');"></div>
+            <div class="spotlight-overlay"></div>
+            <div class="spotlight-content">
+                <div class="spotlight-number">#${i + 1} Spotlight</div>
+                <div class="spotlight-title">${item.title}</div>
+                <div class="spotlight-detail">
+                    <span class="sp-badge">${item.type}</span>
+                    <span class="sp-badge">${item.duration}</span>
+                    <span class="sp-badge">${item.aired}</span>
+                    <span class="sp-badge quality">${item.quality}</span>
+                    <span class="sp-badge eps">EP ${item.episodes}</span>
+                </div>
+                <div class="spotlight-desc">${item.description}</div>
+                <div class="spotlight-buttons">
+                    <a class="sp-btn primary">▶ Watch Now</a>
+                    <a class="sp-btn secondary">Detail →</a>
+                </div>
+            </div>
+        `;
+        slider.appendChild(slide);
+
+        const dot = document.createElement('span');
+        dot.className = 'sp-dot' + (i === 0 ? ' active' : '');
+        dot.dataset.index = i;
+        dot.addEventListener('click', () => goToSpotlight(i, items.length));
+        dots.appendChild(dot);
+    });
+
+    goToSpotlight(0, items.length);
+    startSpotlightAutoplay(items.length);
+}
+
+function goToSpotlight(index, total) {
+    const slides = document.querySelectorAll('.spotlight-slide');
+    const dots = document.querySelectorAll('.sp-dot');
+    if (!slides.length) return;
+    state._spotlightIndex = index;
+    slides.forEach((s, i) => s.classList.toggle('active', i === index));
+    dots.forEach((d, i) => d.classList.toggle('active', i === index));
+}
+
+function startSpotlightAutoplay(total) {
+    stopSpotlightAutoplay();
+    spotlightInterval = setInterval(() => {
+        const next = ((state._spotlightIndex ?? 0) + 1) % total;
+        goToSpotlight(next, total);
+    }, 6000);
+}
+
+function stopSpotlightAutoplay() {
+    if (spotlightInterval) {
+        clearInterval(spotlightInterval);
+        spotlightInterval = null;
+    }
+}
+
+document.addEventListener('click', (e) => {
+    const prevBtn = e.target.closest('#spotlight-prev');
+    const nextBtn = e.target.closest('#spotlight-next');
+    const section = document.getElementById('spotlight');
+    if (!section || section.style.display === 'none') return;
+    const total = document.querySelectorAll('.spotlight-slide').length;
+    if (!total) return;
+    if (prevBtn) {
+        const prev = ((state._spotlightIndex ?? 0) - 1 + total) % total;
+        goToSpotlight(prev, total);
+        startSpotlightAutoplay(total);
+    }
+    if (nextBtn) {
+        const next = ((state._spotlightIndex ?? 0) + 1) % total;
+        goToSpotlight(next, total);
+        startSpotlightAutoplay(total);
+    }
+});
+
+const spEl = document.getElementById('spotlight');
+if (spEl) {
+    spEl.addEventListener('mouseenter', stopSpotlightAutoplay);
+    spEl.addEventListener('mouseleave', () => {
+        const total = document.querySelectorAll('.spotlight-slide').length;
+        if (total) startSpotlightAutoplay(total);
+    });
+}
+    clearInterval(state.countdownInterval);
+    const targetElement = document.getElementById('modal-countdown');
+    if (!targetElement) return;
+
+    let timeLeft = timeUntilSeconds;
+    state.countdownInterval = setInterval(() => {
+        if (timeLeft <= 0) {
+            targetElement.textContent = `Broadcast has commenced! Refresh for updates.`;
+            clearInterval(state.countdownInterval);
+            return;
+        }
+
+        const days = Math.floor(timeLeft / 86400);
+        const hours = Math.floor((timeLeft % 86400) / 3600);
+        const minutes = Math.floor((timeLeft % 3600) / 60);
+        const seconds = timeLeft % 60;
+
+        targetElement.textContent = `${labelPrefix}${days}d ${hours}h ${minutes}m ${seconds}s`;
+        timeLeft--;
+    }, 1000);
+}
