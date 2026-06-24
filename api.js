@@ -155,6 +155,24 @@ export async function fetchAniListMasterData(anilistId, animeTitle, synonyms = [
         });
         let result = await response.json();
         let exactMedia = result.data?.Media;
+
+        if (!exactMedia) {
+            let cleanTitle = animeTitle
+                .replace(/(\s+Part\s+\d+|\s+Season\s+\d+|\s+\d+(st|nd|rd|th)\s+Season|\s+Cour\s+\d+|\s+-*\s*Part\s+\d+)/gi, '')
+                .trim();
+            const titleFallbackQueue = [...new Set([cleanTitle, ...synonyms])].filter(Boolean);
+            for (const testTitle of titleFallbackQueue) {
+                response = await fetch(url, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                    body: JSON.stringify({ query: queryByTitle, variables: { title: testTitle } })
+                });
+                result = await response.json();
+                exactMedia = result.data?.Media;
+                if (exactMedia) break;
+            }
+        }
+
         if (!exactMedia) return null;
 
         let hasStaff = exactMedia.staff && exactMedia.staff.edges.length > 0;
@@ -231,6 +249,44 @@ export async function fetchANNStaffDetails(animeTitle) {
     } catch (e) {
         console.error("ANN Industry Engine failed:", e);
         return { director: "Production Crew", cast: "Main Cast Indexed" };
+    }
+}
+
+export async function fetchSpotlightAnime() {
+    if (state.spotlightAnime && state.spotlightAnime.length > 0) return state.spotlightAnime;
+    try {
+        const ctrl = new AbortController();
+        const t = setTimeout(() => ctrl.abort(), 5000);
+        const res = await fetch('https://api.jikan.moe/v4/seasons/now?limit=8', { signal: ctrl.signal });
+        clearTimeout(t);
+        if (!res.ok) return [];
+        const json = await res.json();
+        const items = (json.data || [])
+            .filter((a, i, arr) => a.mal_id && arr.findIndex(x => x.mal_id === a.mal_id) === i)
+            .slice(0, 8)
+            .map(a => {
+            return {
+                mal_id: a.mal_id,
+                title: a.title_english || a.title || a.title_japanese || 'Unknown',
+                japanese_title: a.title_japanese || '',
+                image: a.images?.jpg?.large_image_url || '',
+                backdrop: a.images?.jpg?.large_image_url || '',
+                type: a.type || 'TV',
+                score: a.score ? a.score.toFixed(1) : 'N/A',
+                episodes: a.episodes || '?',
+                year: a.year || a.aired?.from?.slice(0, 4) || 'TBD',
+                description: a.synopsis ? a.synopsis.slice(0, 280) + (a.synopsis.length > 280 ? '...' : '') : 'No description available.',
+                quality: 'HD',
+                duration: a.duration || '24 min',
+                aired: a.aired?.from ? new Date(a.aired.from).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }) : 'TBA',
+                genres: (a.genres || []).slice(0, 3).map(g => g.name).join(', ')
+            };
+        });
+        state.spotlightAnime = items;
+        return items;
+    } catch (e) {
+        console.warn('Spotlight fetch failed:', e);
+        return [];
     }
 }
 

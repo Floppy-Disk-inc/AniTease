@@ -1180,3 +1180,276 @@ nav_bar{
     align-items: center;
     gap: 2px;
 }
+
+/* ==========================================
+   SPOTLIGHT HERO CAROUSEL
+   ========================================== */
+.spotlight {
+    position: relative;
+    width: 100%;
+    height: 520px;
+    overflow: hidden;
+    background: #0a0a12;
+    margin-bottom: 24px;
+}
+
+.spotlight-badge {
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 5;
+    background: var(--accent-red);
+    color: #fff;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    padding: 6px 18px;
+    border-radius: 20px;
+}
+
+.spotlight-slider {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.spotlight-slide {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity 0.8s ease, transform 0.8s ease;
+    transform: scale(1.05);
+    z-index: 0;
+}
+
+.spotlight-slide.active {
+    opacity: 1;
+    transform: scale(1);
+    z-index: 1;
+}
+
+.spotlight-bg {
+    position: absolute;
+    inset: -30px;
+    background-size: cover;
+    background-position: center;
+    filter: blur(12px) brightness(0.5);
+    transform: scale(1.1);
+}
+
+.spotlight-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to right, rgba(10, 10, 18, 0.97) 0%, rgba(10, 10, 18, 0.75) 50%, rgba(10, 10, 18, 0.5) 100%),
+                linear-gradient(to top, rgba(10, 10, 18, 0.9) 0%, transparent 50%);
+}
+
+.spotlight-content {
+    position: relative;
+    z-index: 2;
+    max-width: 650px;
+    padding: 80px 40px 40px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.spotlight-poster {
+    position: absolute;
+    right: 60px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 3;
+    width: 240px;
+    height: 340px;
+    background-size: cover;
+    background-position: center;
+    border-radius: 12px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+    border: 2px solid rgba(255, 255, 255, 0.08);
+}
+
+.spotlight-number {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--accent-red);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 12px;
+}
+
+.spotlight-title {
+    font-size: 2.5rem;
+    font-weight: 900;
+    color: #fff;
+    line-height: 1.15;
+    margin-bottom: 14px;
+    font-family: 'Roboto Slab', serif;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.spotlight-detail {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 16px;
+}
+
+.sp-badge {
+    font-size: 0.72rem;
+    color: rgba(255, 255, 255, 0.8);
+    background: rgba(255, 255, 255, 0.1);
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-weight: 500;
+}
+
+.sp-badge.quality {
+    color: #ffd700;
+    border: 1px solid rgba(255, 215, 0, 0.3);
+}
+
+.sp-badge.eps {
+    background: var(--accent-red);
+    color: #fff;
+    font-weight: 700;
+}
+
+.spotlight-desc {
+    font-size: 0.88rem;
+    color: rgba(255, 255, 255, 0.7);
+    line-height: 1.6;
+    margin-bottom: 24px;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.spotlight-buttons {
+    display: flex;
+    gap: 14px;
+}
+
+.sp-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 12px 28px;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    text-decoration: none;
+}
+
+.sp-btn.primary {
+    background: var(--accent-red);
+    color: #fff;
+    box-shadow: 0 4px 20px rgba(255, 40, 80, 0.4);
+}
+
+.sp-btn.primary:hover {
+    background: rgb(255, 30, 70);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 28px rgba(255, 40, 80, 0.5);
+}
+
+.sp-btn.secondary {
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.sp-btn.secondary:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
+}
+
+/* Navigation arrows */
+.spotlight-nav {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    transform: translateY(-50%);
+    z-index: 3;
+    pointer-events: none;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 20px;
+}
+
+.spotlight-btn {
+    pointer-events: auto;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    background: rgba(0, 0, 0, 0.4);
+    color: #fff;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.25s ease;
+    backdrop-filter: blur(4px);
+}
+
+.spotlight-btn:hover {
+    background: var(--accent-red);
+    border-color: var(--accent-red);
+    transform: scale(1.1);
+}
+
+.spotlight-btn svg {
+    width: 20px;
+    height: 20px;
+}
+
+/* Pagination dots */
+.spotlight-dots {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 3;
+    display: flex;
+    gap: 10px;
+}
+
+.sp-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.sp-dot.active {
+    background: var(--accent-red);
+    box-shadow: 0 0 10px rgba(255, 40, 80, 0.6);
+    width: 28px;
+    border-radius: 5px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .spotlight { height: 420px; }
+    .spotlight-content { padding: 60px 24px 24px; max-width: 100%; }
+    .spotlight-title { font-size: 1.6rem; }
+    .spotlight-desc { font-size: 0.8rem; -webkit-line-clamp: 2; }
+    .sp-btn { padding: 10px 20px; font-size: 0.85rem; }
+    .spotlight-nav { padding: 0 10px; }
+    .spotlight-btn { width: 36px; height: 36px; }
+    .spotlight-btn svg { width: 16px; height: 16px; }
+    .spotlight-poster { display: none; }
+}
