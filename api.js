@@ -249,7 +249,7 @@ export async function fetchSpotlightAnime() {
             .map(a => {
             return {
                 mal_id: a.mal_id,
-                title: a.title || a.title_english || a.title_japanese || 'Unknown',
+                title: a.title_english || a.title || a.title_japanese || 'Unknown',
                 japanese_title: a.title_japanese || '',
                 image: a.images?.jpg?.large_image_url || '',
                 backdrop: a.images?.jpg?.large_image_url || '',
