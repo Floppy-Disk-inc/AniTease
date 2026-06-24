@@ -254,7 +254,6 @@ export async function fetchSpotlightAnime() {
                 image: a.images?.jpg?.large_image_url || '',
                 backdrop: a.images?.jpg?.large_image_url || '',
                 type: a.type || 'TV',
-                verified_video_id: a.trailer?.youtube_id || null,
                 score: a.score ? a.score.toFixed(1) : 'N/A',
                 episodes: a.episodes || '?',
                 year: a.year || a.aired?.from?.slice(0, 4) || 'TBD',
