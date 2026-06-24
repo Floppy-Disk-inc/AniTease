@@ -155,6 +155,24 @@ export async function fetchAniListMasterData(anilistId, animeTitle, synonyms = [
         });
         let result = await response.json();
         let exactMedia = result.data?.Media;
+
+        if (!exactMedia) {
+            let cleanTitle = animeTitle
+                .replace(/(\s+Part\s+\d+|\s+Season\s+\d+|\s+\d+(st|nd|rd|th)\s+Season|\s+Cour\s+\d+|\s+-*\s*Part\s+\d+)/gi, '')
+                .trim();
+            const titleFallbackQueue = [...new Set([cleanTitle, ...synonyms])].filter(Boolean);
+            for (const testTitle of titleFallbackQueue) {
+                response = await fetch(url, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                    body: JSON.stringify({ query: queryByTitle, variables: { title: testTitle } })
+                });
+                result = await response.json();
+                exactMedia = result.data?.Media;
+                if (exactMedia) break;
+            }
+        }
+
         if (!exactMedia) return null;
 
         let hasStaff = exactMedia.staff && exactMedia.staff.edges.length > 0;
