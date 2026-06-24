@@ -188,7 +188,11 @@ export function renderSpotlight(items) {
     const dots = document.getElementById('spotlight-dots');
     if (!section || !slider || !dots || !items.length) return;
 
-    section.style.display = 'block';
+    if (window.location.hash === '#favorites') {
+        section.style.display = 'none';
+    } else {
+        section.style.display = 'block';
+    }
     slider.innerHTML = '';
     dots.innerHTML = '';
 
