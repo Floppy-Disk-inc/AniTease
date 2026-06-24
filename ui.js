@@ -211,7 +211,6 @@ export function renderSpotlight(items) {
                 <div class="spotlight-desc">${item.description}</div>
                 <div class="spotlight-buttons">
                     <button class="sp-btn primary">▶ Watch Now</button>
-                    <button class="sp-btn secondary">Detail →</button>
                 </div>
             </div>
             <div class="spotlight-poster" style="background-image: url('${item.image}');"></div>
@@ -230,7 +229,7 @@ export function renderSpotlight(items) {
                 genres: item.genres,
                 description: item.description,
                 studio: 'Unknown Studio',
-                verified_video_id: null,
+                verified_video_id: item.verified_video_id || null,
                 synonyms: []
             };
             import('./events.js').then(m => m.openAnimeModal(data));
