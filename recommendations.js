@@ -1,8 +1,27 @@
 import { state } from './state.js';
 
+function getBroaderPool(excludeId) {
+    const seen = new Map();
+    for (const a of [...state.feedPool, ...state.allAnimeData]) {
+        if (a.mal_id !== excludeId) seen.set(a.mal_id, a);
+    }
+    try {
+        const raw = sessionStorage.getItem('aniTeaseFeed');
+        if (raw) {
+            const feed = JSON.parse(raw);
+            for (const a of feed) {
+                if (a.mal_id && a.mal_id !== excludeId && !seen.has(a.mal_id)) {
+                    seen.set(a.mal_id, a);
+                }
+            }
+        }
+    } catch (_) {}
+    return [...seen.values()];
+}
+
 export function computeSimilar(targetAnime, count = 6) {
     const targetGenres = (targetAnime.genres || '').split(', ').filter(Boolean);
-    const candidates = state.allAnimeData.filter(a => a.mal_id !== targetAnime.mal_id);
+    const candidates = getBroaderPool(targetAnime.mal_id);
 
     const scored = candidates.map(anime => {
         let score = 0;

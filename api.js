@@ -291,10 +291,13 @@ export async function fetchSpotlightAnime() {
 }
 
 export async function fetchAnimeData(title = "", page = 1, isNewSearch = true) {
-    if (state.isFetching || (!state.hasMoreData && !isNewSearch)) return;
+    if (!isNewSearch && (state.isFetching || !state.hasMoreData)) return;
     state.isFetching = true;
+    let fetchGen = state._fetchGen || 0;
 
     if (isNewSearch) {
+        state._fetchGen = (state._fetchGen || 0) + 1;
+        fetchGen = state._fetchGen;
         dom.loadingScreen.style.display = 'flex';
         state.currentQuery = title;
         state.currentPage = 1;
@@ -326,6 +329,9 @@ export async function fetchAnimeData(title = "", page = 1, isNewSearch = true) {
                 if (Array.isArray(data) && data.length > 0) {
                     state.allAnimeData = data;
                     state.globalUniqueIds = new Set(data.map(a => a.anilist_id));
+                    const poolMap = new Map();
+                    for (const a of [...state.feedPool, ...data]) poolMap.set(a.mal_id, a);
+                    state.feedPool = [...poolMap.values()];
                     dom.loadingScreen.style.display = 'none';
                     cacheRendered = true;
                     renderAnimeCards(data);
@@ -382,73 +388,87 @@ export async function fetchAnimeData(title = "", page = 1, isNewSearch = true) {
         });
         const result = await response.json();
 
-        if (result.data && result.data.Page.media.length > 0) {
-            const incomingAnime = result.data.Page.media;
-            state.hasMoreData = result.data.Page.pageInfo.hasNextPage;
+        if (!result.data || !result.data.Page || !result.data.Page.media) {
+            if (fetchGen !== state._fetchGen) return;
+            if (isNewSearch && dom.resultsContainer) {
+                dom.resultsContainer.innerHTML = `<p style="color: white; font-size: 1.2rem;">No results found.</p>`;
+            }
+            return;
+        }
 
-            const processedAnime = [];
-            const backupPromises = [];
+        const incomingAnime = result.data.Page.media;
+        const processedAnime = [];
+        const backupPromises = [];
 
-            incomingAnime.forEach(anime => {
-                if (state.globalUniqueIds.has(anime.id)) return;
-                state.globalUniqueIds.add(anime.id);
+        incomingAnime.forEach(anime => {
+            if (state.globalUniqueIds.has(anime.id)) return;
+            state.globalUniqueIds.add(anime.id);
 
-                const mainTitle = (anime.title.english && anime.title.english.trim() !== "")
-                    ? anime.title.english
-                    : (anime.title.romaji || anime.title.native || "Unknown Title");
+            const mainTitle = (anime.title.english && anime.title.english.trim() !== "")
+                ? anime.title.english
+                : (anime.title.romaji || anime.title.native || "Unknown Title");
 
-                let trailerVideoId = null;
-                if (anime.trailer && anime.trailer.site === 'youtube') {
-                    trailerVideoId = anime.trailer.id;
-                }
-
-                const studio = anime.studios?.nodes?.[0]?.name || "Unknown Studio";
-                const genres = anime.genres ? anime.genres.slice(0, 3).join(", ") : "Anime";
-                const episodes = anime.episodes || "TBA";
-                const synonyms = anime.synonyms || [];
-
-                const bestImage = anime.coverImage.large || anime.coverImage.medium || anime.coverImage.extraLarge;
-                const protectedYear = anime.seasonYear || anime.startDate?.year || "TBD";
-
-                let seasonLabel = "UPCOMING";
-                if (anime.season) {
-                    seasonLabel = `${anime.season.toUpperCase()}`;
-                }
-
-                const animeObject = {
-                    anilist_id: anime.id,
-                    mal_id: anime.idMal || anime.id,
-                    title: mainTitle,
-                    images: { jpg: { large_image_url: bestImage } },
-                    description: anime.description || "No official lore has been released yet.",
-                    type: anime.format || "TV",
-                    score: anime.averageScore ? (anime.averageScore / 10).toFixed(1) : "N/A",
-                    members: anime.popularity || 0,
-                    verified_video_id: trailerVideoId,
-                    season: anime.season || "Upcoming",
-                    seasonLabel: seasonLabel,
-                    year: protectedYear,
-                    studio: studio,
-                    genres: genres,
-                    episodes: episodes,
-                    synonyms: synonyms,
-                    startDate: anime.startDate
-                };
-
-                processedAnime.push(animeObject);
-
-                if (!trailerVideoId && !isUpcomingFeed) {
-                    const promise = getTier2BackupTrailer(anime.title.english, anime.title.romaji, anime.title.native, synonyms).then(backupId => {
-                        if (backupId) animeObject.verified_video_id = backupId;
-                    });
-                    backupPromises.push(promise);
-                }
-            });
-
-            if (backupPromises.length > 0) {
-                await Promise.all(backupPromises);
+            let trailerVideoId = null;
+            if (anime.trailer && anime.trailer.site === 'youtube') {
+                trailerVideoId = anime.trailer.id;
             }
 
+            const studio = anime.studios?.nodes?.[0]?.name || "Unknown Studio";
+            const genres = anime.genres ? anime.genres.slice(0, 3).join(", ") : "Anime";
+            const episodes = anime.episodes || "TBA";
+            const synonyms = anime.synonyms || [];
+
+            const bestImage = anime.coverImage.large || anime.coverImage.medium || anime.coverImage.extraLarge;
+            const protectedYear = anime.seasonYear || anime.startDate?.year || "TBD";
+
+            let seasonLabel = "UPCOMING";
+            if (anime.season) {
+                seasonLabel = `${anime.season.toUpperCase()}`;
+            }
+
+            const animeObject = {
+                anilist_id: anime.id,
+                mal_id: anime.idMal || anime.id,
+                title: mainTitle,
+                images: { jpg: { large_image_url: bestImage } },
+                description: anime.description || "No official lore has been released yet.",
+                type: anime.format || "TV",
+                score: anime.averageScore ? (anime.averageScore / 10).toFixed(1) : "N/A",
+                members: anime.popularity || 0,
+                verified_video_id: trailerVideoId,
+                season: anime.season || "Upcoming",
+                seasonLabel: seasonLabel,
+                year: protectedYear,
+                studio: studio,
+                genres: genres,
+                episodes: episodes,
+                synonyms: synonyms,
+                startDate: anime.startDate
+            };
+
+            processedAnime.push(animeObject);
+
+            if (!trailerVideoId && !isUpcomingFeed) {
+                const promise = getTier2BackupTrailer(anime.title.english, anime.title.romaji, anime.title.native, synonyms).then(backupId => {
+                    if (backupId) animeObject.verified_video_id = backupId;
+                });
+                backupPromises.push(promise);
+            }
+        });
+
+        const poolMap = new Map();
+        for (const a of [...state.feedPool, ...processedAnime]) poolMap.set(a.mal_id, a);
+        state.feedPool = [...poolMap.values()];
+
+        if (fetchGen !== state._fetchGen) return;
+
+        state.hasMoreData = result.data.Page.pageInfo.hasNextPage;
+
+        if (backupPromises.length > 0) {
+            await Promise.all(backupPromises);
+        }
+
+        if (processedAnime.length > 0) {
             state.allAnimeData = [...state.allAnimeData, ...processedAnime];
             if (cacheRendered && dom.resultsContainer) {
                 dom.resultsContainer.innerHTML = '';
@@ -470,9 +490,8 @@ export async function fetchAnimeData(title = "", page = 1, isNewSearch = true) {
                 try { sessionStorage.setItem('aniTeaseFeed', JSON.stringify(state.allAnimeData)); } catch (e) {}
             }
 
-        } else {
-            state.hasMoreData = false;
-            if (isNewSearch && dom.resultsContainer) {
+        } else if (isNewSearch && incomingAnime.length === 0) {
+            if (dom.resultsContainer) {
                 dom.resultsContainer.innerHTML = `<p style="color: white; font-size: 1.2rem;">No results found.</p>`;
             }
         }
@@ -498,11 +517,6 @@ export async function fetchAnimeData(title = "", page = 1, isNewSearch = true) {
 
 
 export async function fetchRandomAnime() {
-    if (state.allAnimeData.length > 0) {
-        const pick = state.allAnimeData[Math.floor(Math.random() * state.allAnimeData.length)];
-        return pick;
-    }
-
     const url = 'https://graphql.anilist.co';
     const query = `
     query ($page: Int) {

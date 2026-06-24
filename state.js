@@ -43,6 +43,7 @@ export const state = {
     sortBy: 'default',
     activeGenre: null,
     favoritesLimit: 20,
+    feedPool: [],
 };
 
 state.audio.loop = true;
