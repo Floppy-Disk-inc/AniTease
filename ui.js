@@ -210,12 +210,35 @@ export function renderSpotlight(items) {
                 </div>
                 <div class="spotlight-desc">${item.description}</div>
                 <div class="spotlight-buttons">
-                    <a class="sp-btn primary">▶ Watch Now</a>
-                    <a class="sp-btn secondary">Detail →</a>
+                    <button class="sp-btn primary">▶ Watch Now</button>
+                    <button class="sp-btn secondary">Detail →</button>
                 </div>
             </div>
             <div class="spotlight-poster" style="background-image: url('${item.image}');"></div>
         `;
+
+        const openAnime = () => {
+            const full = state.allAnimeData.find(a => a.mal_id === item.mal_id);
+            const data = full || {
+                mal_id: item.mal_id,
+                title: item.title,
+                images: { jpg: { large_image_url: item.image } },
+                type: item.type,
+                score: item.score,
+                episodes: item.episodes,
+                year: item.year,
+                genres: item.genres,
+                description: item.description,
+                studio: 'Unknown Studio',
+                verified_video_id: null,
+                synonyms: []
+            };
+            import('./events.js').then(m => m.openAnimeModal(data));
+        };
+
+        slide.querySelector('.sp-btn.primary').addEventListener('click', openAnime);
+        slide.querySelector('.sp-btn.secondary').addEventListener('click', openAnime);
+
         slider.appendChild(slide);
 
         const dot = document.createElement('span');
