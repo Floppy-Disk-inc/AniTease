@@ -236,7 +236,6 @@ export function renderSpotlight(items) {
         };
 
         slide.querySelector('.sp-btn.primary').addEventListener('click', openAnime);
-        slide.querySelector('.sp-btn.secondary').addEventListener('click', openAnime);
 
         slider.appendChild(slide);
 
