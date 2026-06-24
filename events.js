@@ -740,3 +740,73 @@ document.addEventListener('DOMContentLoaded', () => {
     aboutLinks.forEach(link => link.addEventListener('click', () => {
         hideSearchElements();
     }));
+
+// Pankaj Card Leaves Animation Handler
+function initializePankajCard() {
+    const dev3Card = document.querySelector('.dev3');
+    const leavesContainer = document.querySelector('.leaves-container');
+    const glowElement = document.querySelector('.dev3-glow');
+    const rainBackground = document.getElementById('rain-background');
+    
+    if (!dev3Card || !leavesContainer || !glowElement) return;
+    
+    let isHovering = false;
+    let leafInterval = null;
+    
+    const leafEmojis = ['🍂', '🍁', '🌿', '🍃'];
+    
+    dev3Card.addEventListener('mouseenter', () => {
+        isHovering = true;
+        
+        // Activate glow
+        glowElement.classList.remove('inactive');
+        glowElement.classList.add('active');
+        if (rainBackground) {
+            rainBackground.classList.add('glowing');
+        }
+        
+        // Start creating leaves
+        leafInterval = setInterval(() => {
+            if (isHovering) {
+                const leaf = document.createElement('div');
+                leaf.className = 'leaf';
+                leaf.textContent = leafEmojis[Math.floor(Math.random() * leafEmojis.length)];
+                
+                // Random horizontal position within the card
+                const randomX = Math.random() * 240;
+                leaf.style.left = randomX + 'px';
+                leaf.style.top = '-30px';
+                
+                leavesContainer.appendChild(leaf);
+                
+                // Remove leaf after animation completes
+                setTimeout(() => {
+                    leaf.remove();
+                }, 3000);
+            }
+        }, 200);
+    });
+    
+    dev3Card.addEventListener('mouseleave', () => {
+        isHovering = false;
+        
+        // Deactivate glow
+        glowElement.classList.remove('active');
+        glowElement.classList.add('inactive');
+        if (rainBackground) {
+            rainBackground.classList.remove('glowing');
+        }
+        
+        if (leafInterval) {
+            clearInterval(leafInterval);
+            leafInterval = null;
+        }
+    });
+}
+
+// Initialize pankaj card when DOM is ready
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initializePankajCard);
+} else {
+    initializePankajCard();
+}
