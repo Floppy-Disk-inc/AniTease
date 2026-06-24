@@ -1235,7 +1235,7 @@ nav_bar{
     inset: -30px;
     background-size: cover;
     background-position: center;
-    filter: blur(25px) brightness(0.35);
+    filter: blur(12px) brightness(0.5);
     transform: scale(1.1);
 }
 
