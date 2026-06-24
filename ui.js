@@ -214,6 +214,7 @@ export function renderSpotlight(items) {
                     <a class="sp-btn secondary">Detail →</a>
                 </div>
             </div>
+            <div class="spotlight-poster" style="background-image: url('${item.image}');"></div>
         `;
         slider.appendChild(slide);
 

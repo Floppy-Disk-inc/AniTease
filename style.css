@@ -1193,6 +1193,22 @@ nav_bar{
     margin-bottom: 24px;
 }
 
+.spotlight-badge {
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 5;
+    background: var(--accent-red);
+    color: #fff;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    padding: 6px 18px;
+    border-radius: 20px;
+}
+
 .spotlight-slider {
     position: relative;
     width: 100%;
@@ -1216,28 +1232,44 @@ nav_bar{
 
 .spotlight-bg {
     position: absolute;
-    inset: 0;
+    inset: -30px;
     background-size: cover;
-    background-position: center top;
-    filter: brightness(0.5);
+    background-position: center;
+    filter: blur(25px) brightness(0.35);
+    transform: scale(1.1);
 }
 
 .spotlight-overlay {
     position: absolute;
     inset: 0;
-    background: linear-gradient(to right, rgba(10, 10, 18, 0.95) 0%, rgba(10, 10, 18, 0.7) 50%, rgba(10, 10, 18, 0.3) 100%),
-                linear-gradient(to top, rgba(10, 10, 18, 0.8) 0%, transparent 50%);
+    background: linear-gradient(to right, rgba(10, 10, 18, 0.97) 0%, rgba(10, 10, 18, 0.75) 50%, rgba(10, 10, 18, 0.5) 100%),
+                linear-gradient(to top, rgba(10, 10, 18, 0.9) 0%, transparent 50%);
 }
 
 .spotlight-content {
     position: relative;
     z-index: 2;
-    max-width: 700px;
+    max-width: 650px;
     padding: 80px 40px 40px;
     height: 100%;
     display: flex;
     flex-direction: column;
     justify-content: center;
+}
+
+.spotlight-poster {
+    position: absolute;
+    right: 60px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 3;
+    width: 240px;
+    height: 340px;
+    background-size: cover;
+    background-position: center;
+    border-radius: 12px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+    border: 2px solid rgba(255, 255, 255, 0.08);
 }
 
 .spotlight-number {
@@ -1412,11 +1444,12 @@ nav_bar{
 /* Responsive */
 @media (max-width: 768px) {
     .spotlight { height: 420px; }
-    .spotlight-content { padding: 60px 24px 24px; }
+    .spotlight-content { padding: 60px 24px 24px; max-width: 100%; }
     .spotlight-title { font-size: 1.6rem; }
     .spotlight-desc { font-size: 0.8rem; -webkit-line-clamp: 2; }
     .sp-btn { padding: 10px 20px; font-size: 0.85rem; }
     .spotlight-nav { padding: 0 10px; }
     .spotlight-btn { width: 36px; height: 36px; }
     .spotlight-btn svg { width: 16px; height: 16px; }
+    .spotlight-poster { display: none; }
 }

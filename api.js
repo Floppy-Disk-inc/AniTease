@@ -243,7 +243,10 @@ export async function fetchSpotlightAnime() {
         clearTimeout(t);
         if (!res.ok) return [];
         const json = await res.json();
-        const items = (json.data || []).map(a => {
+        const items = (json.data || [])
+            .filter((a, i, arr) => a.mal_id && arr.findIndex(x => x.mal_id === a.mal_id) === i)
+            .slice(0, 8)
+            .map(a => {
             return {
                 mal_id: a.mal_id,
                 title: a.title || a.title_english || a.title_japanese || 'Unknown',
