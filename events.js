@@ -50,6 +50,12 @@ function initiateSearch() {
     if (!dom.searchInput) return;
     clearTimeout(state.searchTimeout);
     state.searchTimeout = setTimeout(() => {
+        state.filterMode = 'all';
+        if (window.location.hash) {
+            history.pushState(null, '', window.location.pathname);
+        }
+        var sp = document.getElementById('spotlight');
+        if (sp) sp.style.display = 'none';
         fetchAnimeData(dom.searchInput.value.trim(), 1, true);
     }, 300);
 }
@@ -523,24 +529,46 @@ export async function openAnimeModal(clickedAnime) {
 if (dom.closeBtn) dom.closeBtn.addEventListener('click', closeModal);
 window.addEventListener('click', (e) => { if (e.target === dom.modal) closeModal(); });
 
+function goHome() {
+    dom.searchInput.value = "";
+    if (window.location.hash) {
+        history.pushState(null, '', window.location.pathname);
+    }
+    state.filterMode = 'all';
+    state.currentQuery = '';
+    sessionStorage.removeItem('aniTeaseFeed');
+    fetchAnimeData("", 1, true);
+    var sp = document.getElementById('spotlight');
+    if (sp && state.spotlightAnime && state.spotlightAnime.length) sp.style.display = 'block';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
 if (dom.siteTopTitle && dom.searchInput) {
-    dom.siteTopTitle.addEventListener('click', () => {
-        if (dom.searchInput.value.trim() !== "" || state.currentQuery !== "") {
-            dom.searchInput.value = "";
-            fetchAnimeData("", 1, true);
-        }
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+    dom.siteTopTitle.addEventListener('click', goHome);
+}
+
+var homeLink = document.querySelector('.nav__links a[href="#"]');
+if (homeLink) {
+    homeLink.addEventListener('click', function(e) {
+        e.preventDefault();
+        goHome();
     });
 }
 
 function handleRoute() {
+    var sp = document.getElementById('spotlight');
     if (window.location.hash === '#favorites') {
         state.filterMode = 'favorites';
         state.favoritesLimit = 20;
         if (dom.feedTitle) dom.feedTitle.textContent = 'Your Favorites';
+        if (sp) sp.style.display = 'none';
+        const merged = new Map();
+        for (const a of [...state.feedPool, ...state.allAnimeData]) merged.set(a.mal_id, a);
+        state.allAnimeData = [...merged.values()];
     } else {
         state.filterMode = 'all';
         if (dom.feedTitle) dom.feedTitle.textContent = 'Feed';
+        if (sp && state.spotlightAnime && state.spotlightAnime.length) sp.style.display = 'block';
     }
     refreshDisplay();
 }
